@@ -275,6 +275,11 @@ const App = {
     this.showOverlay('detailWrap', html);
   },
 
+  shareWhatsapp(){
+    const text = 'Mira Finger Skate, tablas y accesorios de finger skate: ' + window.location.href;
+    window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+  },
+
   showToast(msg){
     const seq = ++this.toastSeq;
     let el = document.getElementById('toastEl');
@@ -565,8 +570,11 @@ const App = {
   initDesigner(){
     const canvas = document.getElementById('designerCanvas');
     const ctx = canvas.getContext('2d');
-    this._dz = { canvas, ctx, layers: [], selected: null, dragging: false, dragOffset: {x:0,y:0}, baseColor: '#141311' };
+    this._dz = { canvas, ctx, layers: [], selected: null, dragging: false, dragOffset: {x:0,y:0}, baseColor: '#ffffff', texReady: false };
     const dz = this._dz;
+    const tex = new Image();
+    tex.onload = () => { dz.tex = tex; dz.texReady = true; this.designerDraw(); };
+    tex.src = 'images/deck_blank_realistic.jpg';
     this.designerRenderColors();
     this.designerDraw();
 
@@ -703,8 +711,18 @@ const App = {
     ctx.save();
     this.designerDeckPath(ctx, w, h);
     ctx.clip();
-    ctx.fillStyle = dz.baseColor;
-    ctx.fillRect(0,0,w,h);
+    if (dz.texReady) {
+      ctx.drawImage(dz.tex, 0, 0, w, h);
+      ctx.globalCompositeOperation = 'multiply';
+      ctx.globalAlpha = 0.6;
+      ctx.fillStyle = dz.baseColor;
+      ctx.fillRect(0,0,w,h);
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = 'source-over';
+    } else {
+      ctx.fillStyle = dz.baseColor;
+      ctx.fillRect(0,0,w,h);
+    }
     dz.layers.forEach((l) => {
       ctx.save();
       ctx.translate(l.x, l.y);
@@ -730,8 +748,8 @@ const App = {
     ctx.restore();
     ctx.save();
     this.designerDeckPath(ctx, w, h);
-    ctx.lineWidth = 10;
-    ctx.strokeStyle = '#c87a3e';
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = 'rgba(0,0,0,.5)';
     ctx.stroke();
     ctx.restore();
   },

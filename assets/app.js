@@ -1,41 +1,98 @@
 const PRODUCTS = [
-  {id:"t1",cat:"tablas",name:"Tabla Clásica",price:14.9,img:"images/board_clasica.jpg",
-    desc:"Maple canadiense sin tratar, 34 mm de ancho. Ligera y lista para personalizar a tu gusto."},
-  {id:"t2",cat:"tablas",name:"Tabla Flame",price:16.9,img:"images/board_flame.jpg",
-    desc:"Acabado de llamas blancas sobre fibra negra. Grip de alto agarre y canto biselado."},
-  {id:"t3",cat:"tablas",name:"Tabla Check",price:16.9,img:"images/board_check.jpg",
-    desc:"Estampado ajedrezado blanco y negro. Cóncavo medio, ideal para flips técnicos."},
-  {id:"t4",cat:"tablas",name:"Tabla Wave",price:18.9,img:"images/board_wave.jpg",
-    desc:"Estampado marmolado azul. Forma ancha y estable, perfecta para rampas y manuals."},
-  {id:"r1",cat:"rampas",name:"Rampa Wedge",price:9.9,img:"images/ramp_wedge.jpg",
-    desc:"Cuña de acero con ángulo suave. Ideal para coger velocidad e iniciarte en los saltos."},
-  {id:"r2",cat:"rampas",name:"Quarter Pipe",price:12.9,img:"images/ramp_quarter.jpg",
-    desc:"Transición curva de 90°. Perfecta para airwalks y grinds de entrada."},
-  {id:"r3",cat:"rampas",name:"Set Escaleras + Rail",price:19.9,img:"images/ramp_stairs.jpg",
-    desc:"Seis escalones con pasamanos de acero pulido. El clásico de todo street spot."},
-  {id:"r4",cat:"rampas",name:"Ledge Box",price:11.9,img:"images/ramp_box.jpg",
-    desc:"Cajón bajo con canto metálico, pensado para grinds y slides técnicos."},
-  {id:"r5",cat:"rampas",name:"Rail Metálico",price:8.9,img:"images/ramp_rail.jpg",
-    desc:"Rail recto independiente. Fácil de combinar con cualquier otro obstáculo."},
-  {id:"r6",cat:"rampas",name:"Wedge Ledge",price:10.9,img:"images/ramp_wedge2.jpg",
-    desc:"Cuña con ledge superior: dos obstáculos combinados en uno solo."},
-  {id:"r7",cat:"rampas",name:"Mini Half-Pipe",price:15.9,img:"images/ramp_ubox.jpg",
-    desc:"Transición doble en U, perfecta para encadenar trucos de ida y vuelta."},
-  {id:"r8",cat:"rampas",name:"Pirámide",price:13.9,img:"images/ramp_pyramid.jpg",
-    desc:"Plataforma elevada con cuatro caras en pendiente. Versátil para cualquier ángulo."},
-  {id:"a1",cat:"acc",name:"Set de Ejes",price:6.9,img:"images/acc_ejes.jpg",
-    desc:"Ejes de aluminio ligero y altura estándar. Respuesta ágil en los giros."},
-  {id:"a2",cat:"acc",name:"Ruedas Pro",price:4.9,img:"images/acc_ruedas.jpg",
-    desc:"Goma suave de alto rebote. Rodaje silencioso y muy controlado."},
-  {id:"a3",cat:"acc",name:"Rodamientos",price:3.9,img:"images/acc_rodamientos.jpg",
-    desc:"Precisión ABEC para ruedas rápidas y sin fricción."},
-  {id:"a4",cat:"acc",name:"Tornillería",price:2.5,img:"images/acc_tornilleria.jpg",
-    desc:"Kit completo de tornillos y tuercas para montar tu tabla desde cero."},
-  {id:"a5",cat:"acc",name:"Grip Tape (x2)",price:3.5,img:"images/acc_grip.jpg",
-    desc:"Dos láminas de grip de grano fino. Agarre máximo para tus dedos."}
+  {id:"t1",cat:"tablas",name:"Tabla Clásica",price:14.9,img:"images/board_clasica.jpg",rating:4.6,reviews:128,stock:23,
+    desc:"Maple canadiense sin tratar, 34 mm de ancho. Ligera y lista para personalizar a tu gusto.",
+    specs:[["Material","Maple canadiense de 7 capas"],["Ancho","34 mm"],["Cóncavo","Medio"],["Acabado","Sin tratar, natural"],["Nivel","Iniciación / todo uso"]],
+    bullets:["Base ligera para montar tu propio setup de ejes y ruedas","Superficie lijada a mano para un agarre uniforme del grip","Compatible con todos los ejes de nuestro catálogo"]},
+  {id:"t2",cat:"tablas",name:"Tabla Flame",price:16.9,img:"images/board_flame.jpg",rating:4.8,reviews:94,stock:17,
+    desc:"Acabado de llamas blancas sobre fibra negra. Grip de alto agarre y canto biselado.",
+    specs:[["Material","Fibra de arce prensada"],["Ancho","34.5 mm"],["Cóncavo","Pronunciado"],["Acabado","Serigrafía llamas blancas"],["Nivel","Intermedio"]],
+    bullets:["Canto biselado para un mejor agarre en flips","Grip de alta fricción ya instalado de fábrica","Diseño exclusivo, tirada limitada"]},
+  {id:"t3",cat:"tablas",name:"Tabla Check",price:16.9,img:"images/board_check.jpg",rating:4.7,reviews:81,stock:30,
+    desc:"Estampado ajedrezado blanco y negro. Cóncavo medio, ideal para flips técnicos.",
+    specs:[["Material","Maple canadiense de 7 capas"],["Ancho","34 mm"],["Cóncavo","Medio-alto"],["Acabado","Estampado ajedrez"],["Nivel","Intermedio / avanzado"]],
+    bullets:["Pop rápido gracias a su construcción multicapa","Cóncavo pensado para flips técnicos y precisos","Combina bien con ejes de perfil bajo"]},
+  {id:"t4",cat:"tablas",name:"Tabla Wave",price:18.9,img:"images/board_wave.jpg",rating:4.9,reviews:56,stock:12,
+    desc:"Estampado marmolado azul. Forma ancha y estable, perfecta para rampas y manuals.",
+    specs:[["Material","Maple + fibra de vidrio"],["Ancho","35.5 mm"],["Cóncavo","Suave"],["Acabado","Marmolado azul"],["Nivel","Todo nivel"]],
+    bullets:["La más ancha del catálogo: máxima estabilidad","Ideal para rampas, manuals y líneas largas","Fibra de vidrio añadida para mayor durabilidad"]},
+  {id:"r1",cat:"rampas",name:"Rampa Wedge",price:9.9,img:"images/ramp_wedge.jpg",rating:4.5,reviews:63,stock:40,
+    desc:"Cuña de acero con ángulo suave. Ideal para coger velocidad e iniciarte en los saltos.",
+    specs:[["Material","Acero pintado"],["Medidas","9 x 6 x 3 cm"],["Ángulo","15°"],["Peso","110 g"]],
+    bullets:["Base antideslizante para apoyar sobre cualquier mesa","Perfecta como primer obstáculo de salto","Combinable con el Rail Metálico"]},
+  {id:"r2",cat:"rampas",name:"Quarter Pipe",price:12.9,img:"images/ramp_quarter.jpg",rating:4.7,reviews:49,stock:22,
+    desc:"Transición curva de 90°. Perfecta para airwalks y grinds de entrada.",
+    specs:[["Material","Acero pulido"],["Medidas","10 x 8 x 4 cm"],["Transición","90°, radio 4 cm"],["Peso","160 g"]],
+    bullets:["Curva pulida a mano para una rodadura suave","Ideal para trucos aéreos de entrada y salida","Base lastrada para que no se mueva"]},
+  {id:"r3",cat:"rampas",name:"Set Escaleras + Rail",price:19.9,img:"images/ramp_stairs.jpg",rating:4.8,reviews:71,stock:15,
+    desc:"Seis escalones con pasamanos de acero pulido. El clásico de todo street spot.",
+    specs:[["Material","Acero + aluminio"],["Medidas","14 x 9 x 5 cm"],["Escalones","6"],["Peso","240 g"]],
+    bullets:["El obstáculo más completo del catálogo","Pasamanos desmontable para variar el setup","Réplica fiel de un spot de street real"]},
+  {id:"r4",cat:"rampas",name:"Ledge Box",price:11.9,img:"images/ramp_box.jpg",rating:4.4,reviews:38,stock:28,
+    desc:"Cajón bajo con canto metálico, pensado para grinds y slides técnicos.",
+    specs:[["Material","Madera + canto de acero"],["Medidas","11 x 6 x 3 cm"],["Altura","3 cm"],["Peso","130 g"]],
+    bullets:["Canto metálico para grinds largos y suaves","Altura baja ideal para empezar con slides","Base amplia y estable"]},
+  {id:"r5",cat:"rampas",name:"Rail Metálico",price:8.9,img:"images/ramp_rail.jpg",rating:4.6,reviews:52,stock:35,
+    desc:"Rail recto independiente. Fácil de combinar con cualquier otro obstáculo.",
+    specs:[["Material","Acero inoxidable"],["Medidas","12 x 3 x 4 cm"],["Diámetro","4 mm"],["Peso","95 g"]],
+    bullets:["El más versátil: combina con cualquier rampa","Acabado pulido para grinds rápidos","Fácil de transportar"]},
+  {id:"r6",cat:"rampas",name:"Wedge Ledge",price:10.9,img:"images/ramp_wedge2.jpg",rating:4.5,reviews:27,stock:19,
+    desc:"Cuña con ledge superior: dos obstáculos combinados en uno solo.",
+    specs:[["Material","Acero pintado"],["Medidas","10 x 6 x 4 cm"],["Ángulo","12°"],["Peso","125 g"]],
+    bullets:["Dos obstáculos en uno: ahorra espacio en tu setup","Ledge superior para grinds técnicos","Buen punto de salto para encadenar trucos"]},
+  {id:"r7",cat:"rampas",name:"Mini Half-Pipe",price:15.9,img:"images/ramp_ubox.jpg",rating:4.9,reviews:44,stock:14,
+    desc:"Transición doble en U, perfecta para encadenar trucos de ida y vuelta.",
+    specs:[["Material","Acero pulido"],["Medidas","16 x 7 x 5 cm"],["Transición","Doble, radio 5 cm"],["Peso","310 g"]],
+    bullets:["El favorito para sesiones largas de práctica","Transición simétrica en ambos lados","Acabado antideslizante en la base"]},
+  {id:"r8",cat:"rampas",name:"Pirámide",price:13.9,img:"images/ramp_pyramid.jpg",rating:4.3,reviews:19,stock:21,
+    desc:"Plataforma elevada con cuatro caras en pendiente. Versátil para cualquier ángulo.",
+    specs:[["Material","Acero pintado"],["Medidas","12 x 12 x 5 cm"],["Caras","4, pendiente 15°"],["Peso","220 g"]],
+    bullets:["Cuatro rampas en una sola pieza","Encara el obstáculo desde cualquier lado","Base amplia, muy estable"]},
+  {id:"a1",cat:"acc",name:"Set de Ejes",price:6.9,img:"images/acc_ejes.jpg",rating:4.6,reviews:142,stock:60,
+    desc:"Ejes de aluminio ligero y altura estándar. Respuesta ágil en los giros.",
+    specs:[["Material","Aluminio aeronáutico"],["Altura","Estándar (8 mm)"],["Ancho","32 mm"],["Compatibilidad","Todas las tablas del catálogo"]],
+    bullets:["Respuesta ágil en giros y carving","Tornillería incluida para el montaje","Par de ejes delantero y trasero"]},
+  {id:"a2",cat:"acc",name:"Ruedas Pro",price:4.9,img:"images/acc_ruedas.jpg",rating:4.7,reviews:167,stock:55,
+    desc:"Goma suave de alto rebote. Rodaje silencioso y muy controlado.",
+    specs:[["Material","Uretano de alto rebote"],["Diámetro","7.5 mm"],["Dureza","92A"],["Unidades","Pack de 4"]],
+    bullets:["Rodaje silencioso incluso en superficies duras","Alto rebote para más velocidad en rampas","Dureza media: control sin perder agarre"]},
+  {id:"a3",cat:"acc",name:"Rodamientos",price:3.9,img:"images/acc_rodamientos.jpg",rating:4.5,reviews:103,stock:70,
+    desc:"Precisión ABEC para ruedas rápidas y sin fricción.",
+    specs:[["Material","Acero cromado"],["Precisión","ABEC-7"],["Unidades","8 (set completo)"],["Compatibilidad","Ruedas Pro y estándar"]],
+    bullets:["Fricción mínima para ruedas más rápidas","Precisión ABEC-7, nivel competición","Vienen lubricados de fábrica"]},
+  {id:"a4",cat:"acc",name:"Tornillería",price:2.5,img:"images/acc_tornilleria.jpg",rating:4.4,reviews:58,stock:90,
+    desc:"Kit completo de tornillos y tuercas para montar tu tabla desde cero.",
+    specs:[["Material","Acero inoxidable"],["Unidades","8 tornillos + 8 tuercas"],["Medida","M2 x 8 mm"],["Compatibilidad","Universal"]],
+    bullets:["Todo lo necesario para un montaje completo","Cabeza Phillips, fácil de apretar con mini-destornillador","Acabado anticorrosión"]},
+  {id:"a5",cat:"acc",name:"Grip Tape (x2)",price:3.5,img:"images/acc_grip.jpg",rating:4.8,reviews:112,stock:48,
+    desc:"Dos láminas de grip de grano fino. Agarre máximo para tus dedos.",
+    specs:[["Material","Lija de grano fino"],["Unidades","2 láminas"],["Medidas","4 x 10 cm c/u"],["Compatibilidad","Cualquier tabla estándar"]],
+    bullets:["Agarre máximo incluso con los dedos sudados","Grano fino: no raya la piel","Recortable a la forma exacta de tu tabla"]}
 ];
 const byId = (id) => PRODUCTS.find(p => p.id === id);
 const fmt = (n) => n.toFixed(2).replace('.', ',') + ' €';
+
+const KITS = [
+  {id:"k1",name:"Kit Iniciación",img:"images/board_clasica.jpg",
+    desc:"Todo lo que necesitas para empezar: tabla, ejes, ruedas y grip en un solo pack.",
+    includes:["t1","a1","a2","a5"],price:24.9},
+  {id:"k2",name:"Kit Pro Completo",img:"images/board_flame.jpg",
+    desc:"El set definitivo: tabla, ejes, ruedas, rodamientos, grip y tornillería.",
+    includes:["t2","a1","a2","a3","a4","a5"],price:29.9},
+  {id:"k3",name:"Kit Rampas Starter",img:"images/ramp_quarter.jpg",
+    desc:"Tres obstáculos clásicos para montar tu primer street spot en casa.",
+    includes:["r5","r1","r4"],price:24.9}
+];
+const kitOriginal = (k) => k.includes.reduce((s,id) => s + byId(id).price, 0);
+const kitSavings = (k) => Math.max(0, kitOriginal(k) - k.price);
+
+const starRow = (rating, reviews) => {
+  const full = Math.round(rating);
+  let stars = '';
+  for (let i=1; i<=5; i++) {
+    stars += '<svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 2.5l2.9 6 6.6.8-4.8 4.6 1.2 6.5L12 17l-5.9 3.4 1.2-6.5L2.5 9.3l6.6-.8z" fill="' + (i<=full ? 'currentColor' : 'none') + '" stroke="currentColor" stroke-width="1.3"/></svg>';
+  }
+  return '<span class="stars">' + stars + '</span><span class="ratingtxt">' + rating.toFixed(1) + ' · ' + reviews + ' valoraciones</span>';
+};
 
 const TRUCK_COLORS = [
   {key:"plata",name:"Plata",filter:"none"},
@@ -74,6 +131,8 @@ const App = {
     if (document.getElementById('gridRampas')) this.renderGrid('gridRampas', 'rampas');
     if (document.getElementById('gridAcc')) this.renderGrid('gridAcc', 'acc');
     if (document.getElementById('cfgDecks')) this.renderConfigurator();
+    if (document.getElementById('gridKits')) this.renderKits('gridKits');
+    if (document.getElementById('gridKitsHome')) this.renderKits('gridKitsHome');
     this.renderCartBadge();
     this.bindScroll();
     const bearingsBox = document.getElementById('cfgBearingsBox');
@@ -135,6 +194,7 @@ const App = {
         '</div>' +
         '<div class="cardbody">' +
           '<div class="cardname">' + p.name + '</div>' +
+          (p.rating != null ? '<div class="miniRating">' + starRow(p.rating, p.reviews||0) + '</div>' : '') +
           '<div class="cardprice">' + fmt(p.price) + '</div>' +
           '<button class="addbtn" onclick="App.addToCart(\'' + p.id + '\')">Añadir a la cesta</button>' +
         '</div>' +
@@ -149,6 +209,63 @@ const App = {
       el.textContent = qty;
       el.style.display = qty > 0 ? 'flex' : 'none';
     });
+  },
+
+  renderKits(containerId){
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    el.innerHTML = KITS.map((k) => {
+      const orig = kitOriginal(k);
+      const save = kitSavings(k);
+      const pct = Math.round((save/orig)*100);
+      return '<div class="card kitcard">' +
+        '<div class="cardimg" onclick="App.openKitDetail(\'' + k.id + '\')">' +
+          '<img src="' + k.img + '" alt="' + k.name + '">' +
+          '<span class="kitbadge">-' + pct + '%</span>' +
+        '</div>' +
+        '<div class="cardbody">' +
+          '<div class="cardname">' + k.name + '</div>' +
+          '<p class="kitincludes">' + k.includes.map((id)=>byId(id).name).join(' + ') + '</p>' +
+          '<div class="kitprices"><span class="kitold">' + fmt(orig) + '</span><span class="cardprice">' + fmt(k.price) + '</span></div>' +
+          '<div class="kitsave">Ahorras ' + fmt(save) + '</div>' +
+          '<button class="addbtn" onclick="App.addKitToCart(\'' + k.id + '\')">Añadir kit a la cesta</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+    this.observeReveal(el.querySelectorAll('.card'));
+  },
+  addKitToCart(kitId){
+    const k = KITS.find((x) => x.id === kitId);
+    if (!k) return;
+    k.includes.forEach((id) => { this.cart[id] = (this.cart[id] || 0) + 1; });
+    this.persist();
+    this.renderCartBadge();
+    this.refreshGrids();
+    this.showToast(k.name + ' añadido a la cesta');
+  },
+  openKitDetail(kitId){
+    const k = KITS.find((x) => x.id === kitId);
+    if (!k) return;
+    const orig = kitOriginal(k);
+    const save = kitSavings(k);
+    const html =
+      '<div class="backdrop" onclick="App.closeDetail()"></div>' +
+      '<div class="modal detailmodal">' +
+        '<div class="detailimg"><img src="' + k.img + '" alt="' + k.name + '"></div>' +
+        '<div class="detailbody">' +
+          '<div class="detailname">' + k.name + '</div>' +
+          '<div class="kitprices" style="margin-top:6px"><span class="kitold">' + fmt(orig) + '</span><span class="detailprice" style="margin-top:0">' + fmt(k.price) + '</span></div>' +
+          '<div class="kitsave" style="margin-top:4px">Ahorras ' + fmt(save) + ' frente a comprar cada pieza por separado</div>' +
+          '<p class="detaildesc">' + k.desc + '</p>' +
+          '<div class="detailspecs">' + k.includes.map((id) => {
+            const p = byId(id);
+            return '<div class="specrow"><span>' + p.name + '</span><span>' + fmt(p.price) + '</span></div>';
+          }).join('') + '</div>' +
+          '<button class="detailadd" onclick="App.addKitToCart(\'' + k.id + '\');App.closeDetail()">Añadir kit a la cesta</button>' +
+        '</div>' +
+        '<button class="iconbtn" style="position:absolute;top:16px;right:16px" onclick="App.closeDetail()">✕</button>' +
+      '</div>';
+    this.showOverlay('detailWrap', html);
   },
 
   showToast(msg){
@@ -306,14 +423,30 @@ const App = {
   renderDetail(){
     const p = byId(this.detailId);
     if (!p) return;
+    const specsHtml = (p.specs||[]).map((s) =>
+      '<div class="specrow"><span>' + s[0] + '</span><span>' + s[1] + '</span></div>'
+    ).join('');
+    const bulletsHtml = (p.bullets||[]).map((b) => '<li>' + b + '</li>').join('');
+    const stockHtml = p.stock != null
+      ? '<div class="stockrow"><span class="stockdot"></span>En stock — quedan ' + p.stock + ' unidades</div>'
+      : '';
     const html =
       '<div class="backdrop" onclick="App.closeDetail()"></div>' +
       '<div class="modal detailmodal">' +
         '<div class="detailimg"><img src="' + p.img + '" alt="' + p.name + '"></div>' +
         '<div class="detailbody">' +
           '<div class="detailname">' + p.name + '</div>' +
+          (p.rating != null ? '<div class="ratingrow">' + starRow(p.rating, p.reviews||0) + '</div>' : '') +
           '<div class="detailprice">' + fmt(p.price) + '</div>' +
+          stockHtml +
           '<p class="detaildesc">' + p.desc + '</p>' +
+          (bulletsHtml ? '<ul class="detailbullets">' + bulletsHtml + '</ul>' : '') +
+          (specsHtml ? '<div class="detailspecs">' + specsHtml + '</div>' : '') +
+          '<div class="trustrow">' +
+            '<span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M7 7V5a5 5 0 0 1 10 0v2"/></svg>Pago seguro simulado</span>' +
+            '<span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h13v10H3zM16 10h3l2 3v4h-5z"/><circle cx="7.5" cy="19" r="1.6"/><circle cx="17.5" cy="19" r="1.6"/></svg>Envío en 24–48h</span>' +
+            '<span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"/></svg>Devolución 30 días</span>' +
+          '</div>' +
           '<div class="detailqty">' +
             '<button onclick="App.decDetailQty()">-</button>' +
             '<span id="detailQtyVal">' + this.detailQty + '</span>' +

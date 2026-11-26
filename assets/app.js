@@ -263,7 +263,7 @@ const App = {
           }).join('') + '</div>' +
           '<button class="detailadd" onclick="App.addKitToCart(\'' + k.id + '\');App.closeDetail()">Añadir kit a la cesta</button>' +
         '</div>' +
-        '<button class="iconbtn" style="position:absolute;top:16px;right:16px" onclick="App.closeDetail()">✕</button>' +
+        '<button class="iconbtn" style="position:fixed;top:max(16px,env(safe-area-inset-top));right:max(16px,env(safe-area-inset-right));z-index:175;background:rgba(20,19,17,.8)" onclick="App.closeDetail()">✕</button>' +
       '</div>';
     this.showOverlay('detailWrap', html);
   },
@@ -454,7 +454,7 @@ const App = {
           '</div>' +
           '<button class="detailadd" onclick="App.addDetailToCart()">Añadir a la cesta</button>' +
         '</div>' +
-        '<button class="iconbtn" style="position:absolute;top:16px;right:16px" onclick="App.closeDetail()">✕</button>' +
+        '<button class="iconbtn" style="position:fixed;top:max(16px,env(safe-area-inset-top));right:max(16px,env(safe-area-inset-right));z-index:175;background:rgba(20,19,17,.8)" onclick="App.closeDetail()">✕</button>' +
       '</div>';
     this.showOverlay('detailWrap', html);
   },

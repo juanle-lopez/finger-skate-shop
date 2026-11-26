@@ -1,6 +1,7 @@
 :root{ --ink:#0a0a0a; --accent:#e8a15c; }
 *{box-sizing:border-box}
 body{margin:0;background:var(--ink);font-family:'Inter',system-ui,sans-serif;color:#fff;overflow-x:hidden}
+body.modalopen{overflow:hidden}
 html{scroll-behavior:smooth}
 h1,h2,h3{font-family:'Archivo Black','Inter',sans-serif;letter-spacing:-0.02em;margin:0}
 a{color:inherit;text-decoration:none}
@@ -27,7 +28,7 @@ section{position:relative;width:100%;overflow:hidden}
 .cover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;will-change:transform}
 .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.2) 0%,rgba(0,0,0,0) 35%,rgba(0,0,0,.6) 100%)}
 .hero{height:100vh;min-height:680px;display:flex;align-items:center}
-.hero-inner{position:relative;z-index:2;padding:0 48px;max-width:1440px;margin:0 auto;width:100%}
+.hero-inner{position:relative;z-index:2;padding:0 48px;max-width:1440px;margin:0 auto;width:100%;display:flex;flex-direction:column;align-items:flex-end;text-align:right}
 .eyebrow{font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);opacity:0;transform:translateY(16px);animation:rise .8s ease forwards .1s}
 .title{font-size:clamp(52px,8.5vw,120px);line-height:.94;margin-top:14px;opacity:0;transform:translateY(24px);animation:rise .9s ease forwards .25s}
 .sub{margin-top:22px;font-size:17px;color:#d8d8d4;max-width:460px;opacity:0;transform:translateY(16px);animation:rise .8s ease forwards .5s}
@@ -100,8 +101,10 @@ footer{background:#000;padding:56px 48px 36px;border-top:1px solid rgba(255,255,
 .subtotal{display:flex;justify-content:space-between;font-weight:800;font-size:15px;margin-bottom:14px}
 .checkoutbtn{width:100%;background:var(--accent);color:#000;padding:15px 0;border-radius:999px;font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;transition:transform .2s}
 .checkoutbtn:hover{transform:translateY(-2px)}
-.modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:170;background:#141311;border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:44px 40px;width:min(420px,88vw);text-align:center;animation:popin .3s cubic-bezier(.16,.84,.44,1);max-height:88vh;overflow-y:auto}
-@keyframes popin{from{opacity:0;transform:translate(-50%,-46%) scale(.94)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+#detailWrap,#drawerWrap{position:fixed;inset:0;z-index:150;display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#detailWrap:empty,#drawerWrap:empty{display:none}
+.modal{position:relative;z-index:170;background:#141311;border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:44px 40px;width:min(420px,88vw);text-align:center;animation:popin .3s cubic-bezier(.16,.84,.44,1);max-height:calc(100vh - 48px);max-height:calc(100dvh - 48px);overflow-y:auto;margin:auto}
+@keyframes popin{from{opacity:0;transform:scale(.94);}to{opacity:1;transform:scale(1)}}
 .modalicon{width:64px;height:64px;border-radius:50%;background:var(--accent);color:#000;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;margin:0 auto 18px}
 .modal h3{font-size:22px}
 .modal p{color:#c8c8c2;font-size:14px;margin:10px 0}
@@ -132,7 +135,7 @@ footer{background:#000;padding:56px 48px 36px;border-top:1px solid rgba(255,255,
 .detailqty button{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.1);color:#fff;font-weight:700;font-size:16px}
 .detailqty button:hover{background:var(--accent);color:#000}
 .detailqty span{font-weight:800;font-size:16px;min-width:20px;text-align:center}
-.detailadd{margin-top:auto;background:#fff;color:#000;padding:14px 0;border-radius:999px;font-weight:800;font-size:13px;letter-spacing:.05em;text-transform:uppercase;transition:all .2s}
+.detailadd{margin-top:26px;background:#fff;color:#000;padding:14px 0;border-radius:999px;font-weight:800;font-size:13px;letter-spacing:.05em;text-transform:uppercase;transition:all .2s}
 .detailadd:hover{background:var(--accent)}
 @media (max-width:620px){.detailmodal{flex-direction:column}.detailimg{width:100%;aspect-ratio:1.6/1}}
 .cfgsec{background:#0f0e0c;padding:100px 48px 100px}
@@ -163,7 +166,7 @@ footer{background:#000;padding:56px 48px 36px;border-top:1px solid rgba(255,255,
 .cfgaddbtn:hover{transform:translateY(-2px)}
 @media (max-width:900px){.cfgwrap{grid-template-columns:1fr}.cfgsummary{position:static}.cfgdecks{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:760px){.navlinks{display:none}.nav{padding:16px 22px}.hero-inner{padding:0 22px}.shopsec{padding:72px 22px 60px}.banner .btxt{padding:0 24px}.cfgsec{padding:72px 22px}}
+@media (max-width:760px){.navlinks{display:none}.nav{padding:16px 22px}.hero-inner{padding:0 22px;align-items:flex-start;text-align:left}.shopsec{padding:72px 22px 60px}.banner .btxt{padding:0 24px}.cfgsec{padding:72px 22px}}
 
 /* Barra inferior tipo app (solo móvil) */
 .tabs{display:none}

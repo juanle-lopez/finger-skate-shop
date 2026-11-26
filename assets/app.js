@@ -480,10 +480,17 @@ const App = {
       document.getElementById('overlays').appendChild(holder);
     }
     holder.innerHTML = html;
+    holder.scrollTop = 0;
+    document.body.classList.add('modalopen');
   },
   closeOverlay(key){
     const holder = document.getElementById(key);
     if (holder) holder.innerHTML = '';
+    const stillOpen = ['detailWrap', 'drawerWrap'].some((k) => {
+      const h = document.getElementById(k);
+      return h && h.innerHTML.trim() !== '';
+    });
+    if (!stillOpen) document.body.classList.remove('modalopen');
   },
 
   selectDeck(id){ this.cfgDeck = id; this.renderConfigurator(); },

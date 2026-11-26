@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Finger Skate — Tienda</title>
+<meta name="description" content="Tablas, rampas y accesorios de finger skate. Configura tu propio setup.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{ --ink:#0a0a0a; --accent:#e8a15c; }
+*{box-sizing:border-box}
+body{margin:0;background:var(--ink);font-family:'Inter',system-ui,sans-serif;color:#fff;overflow-x:hidden}
+html{scroll-behavior:smooth}
+h1,h2,h3{font-family:'Archivo Black','Inter',sans-serif;letter-spacing:-0.02em;margin:0}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none}
+img{max-width:100%}
+::selection{background:var(--accent);color:#000}
+.progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:120;width:0%;transition:width .08s linear}
+.nav{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;align-items:center;justify-content:space-between;padding:20px 48px;transition:all .35s ease;background:transparent}
+.nav.scrolled{padding:12px 48px;background:rgba(10,10,10,.75);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.08)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.08em;font-size:15px}
+.navlinks{display:flex;gap:28px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.navlinks a{position:relative;padding-bottom:4px;opacity:.85;transition:opacity .2s,color .2s}
+.navlinks a:hover{opacity:1;color:var(--accent)}
+.navlinks a::after{content:'';position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--accent);transition:width .25s}
+.navlinks a:hover::after{width:100%}
+.navright{display:flex;align-items:center;gap:16px}
+.cartbtn{position:relative;display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;transition:all .2s}
+.cartbtn:hover{background:#fff;color:#000}
+.badge{position:absolute;top:-6px;right:-6px;background:var(--accent);color:#000;font-size:11px;font-weight:800;min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 4px}
+section{position:relative;width:100%;overflow:hidden}
+.cover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;will-change:transform}
+.scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.2) 0%,rgba(0,0,0,0) 35%,rgba(0,0,0,.6) 100%)}
+.hero{height:100vh;min-height:680px;display:flex;align-items:center}
+.hero-inner{position:relative;z-index:2;padding:0 48px;max-width:1440px;margin:0 auto;width:100%}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);opacity:0;transform:translateY(16px);animation:rise .8s ease forwards .1s}
+.title{font-size:clamp(52px,8.5vw,120px);line-height:.94;margin-top:14px;opacity:0;transform:translateY(24px);animation:rise .9s ease forwards .25s}
+.sub{margin-top:22px;font-size:17px;color:#d8d8d4;max-width:460px;opacity:0;transform:translateY(16px);animation:rise .8s ease forwards .5s}
+.btnrow{margin-top:36px;display:flex;gap:16px;opacity:0;transform:translateY(16px);animation:rise .8s ease forwards .7s}
+.btn{display:inline-flex;align-items:center;gap:10px;background:#fff;color:#000;padding:16px 28px;border-radius:999px;font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;transition:transform .25s,box-shadow .25s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(0,0,0,.35)}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff}
+.btn.ghost:hover{background:#fff;color:#000}
+@keyframes rise{to{opacity:1;transform:none}}
+.scrolldown{position:absolute;left:50%;bottom:32px;transform:translateX(-50%);z-index:2;animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,10px)}}
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.16,.84,.44,1),transform .9s cubic-bezier(.16,.84,.44,1)}
+.reveal.on{opacity:1;transform:none}
+.shopsec{padding:100px 48px 90px;max-width:1280px;margin:0 auto}
+.banner{position:relative;height:38vh;min-height:260px;border-radius:22px;overflow:hidden;margin-bottom:40px}
+.banner img{width:100%;height:100%;object-fit:cover}
+.banner .bscrim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.72) 10%,rgba(0,0,0,.08) 70%)}
+.banner .btxt{position:absolute;left:0;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;padding:0 44px;max-width:560px}
+.kicker{font-size:12px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--accent)}
+.sech{font-size:clamp(30px,4.2vw,48px);margin-top:10px}
+.secp{margin-top:10px;color:#d8d8d4;font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.card{background:#141311;border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;transition:transform .3s,border-color .3s}
+.card:hover{transform:translateY(-6px);border-color:rgba(255,255,255,.22)}
+.cardimg{position:relative;aspect-ratio:1.15/1;background:#0d0c0b;cursor:pointer}
+.cardimg img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.card:hover .cardimg img{transform:scale(1.07)}
+.qtybadge{position:absolute;top:10px;right:10px;background:var(--accent);color:#000;font-size:12px;font-weight:800;min-width:24px;height:24px;border-radius:12px;display:flex;align-items:center;justify-content:center;padding:0 6px}
+.cardbody{padding:16px 16px 18px}
+.cardname{font-weight:700;font-size:14.5px}
+.cardprice{margin-top:4px;color:var(--accent);font-weight:800;font-size:15px}
+.addbtn{margin-top:12px;width:100%;background:#fff;color:#000;padding:11px 0;border-radius:999px;font-weight:800;font-size:12px;letter-spacing:.05em;text-transform:uppercase;transition:all .2s}
+.addbtn:hover{background:var(--accent)}
+footer{background:#000;padding:56px 48px 36px;border-top:1px solid rgba(255,255,255,.08)}
+.footrow{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;max-width:1180px;margin:0 auto}
+.footbrand{font-family:'Archivo Black';font-size:18px;letter-spacing:.04em}
+.socials{display:flex;gap:14px}
+.social{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;transition:all .25s}
+.social:hover{background:var(--accent);border-color:var(--accent);color:#000;transform:translateY(-3px)}
+.fine{color:#707068;font-size:12px;margin-top:22px;text-align:center}
+.totop{position:fixed;right:24px;bottom:24px;z-index:80;width:48px;height:48px;border-radius:50%;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;transform:translateY(10px)}
+.totop.show{opacity:1;pointer-events:auto;transform:none}
+.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:150;backdrop-filter:blur(2px);animation:fadein .25s ease}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,92vw);background:#121110;z-index:160;display:flex;flex-direction:column;box-shadow:-20px 0 50px rgba(0,0,0,.5);animation:slidein .32s cubic-bezier(.16,.84,.44,1)}
+@keyframes slidein{from{transform:translateX(100%)}to{transform:translateX(0)}}
+.drawerhead{display:flex;align-items:center;justify-content:space-between;padding:22px 24px;border-bottom:1px solid rgba(255,255,255,.08);font-weight:800;letter-spacing:.04em;text-transform:uppercase;font-size:14px}
+.iconbtn{background:transparent;color:#fff;font-size:16px;width:32px;height:32px;border-radius:50%;transition:background .2s}
+.iconbtn:hover{background:rgba(255,255,255,.12)}
+.drawerlist{flex:1;overflow-y:auto;padding:12px 20px}
+.emptycart{color:#8c8c86;text-align:center;padding:60px 10px;line-height:1.6;font-size:14px}
+.drawerline{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.drawerline img{width:64px;height:64px;object-fit:cover;border-radius:10px;background:#000}
+.dlinfo{flex:1}
+.dlname{font-weight:700;font-size:13.5px}
+.dlprice{color:#8c8c86;font-size:12px;margin-top:2px}
+.qtyctrl{display:flex;align-items:center;gap:10px;margin-top:10px}
+.qtyctrl button{width:26px;height:26px;border-radius:8px;background:rgba(255,255,255,.1);color:#fff;font-weight:700}
+.qtyctrl button:hover{background:var(--accent);color:#000}
+.qtyctrl span{min-width:16px;text-align:center;font-weight:700;font-size:13px}
+.dlright{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between}
+.dltotal{font-weight:800;font-size:13.5px;color:var(--accent)}
+.rm{background:transparent;color:#8c8c86;font-size:11px;text-decoration:underline;margin-top:8px}
+.rm:hover{color:#fff}
+.drawerfoot{padding:20px 24px;border-top:1px solid rgba(255,255,255,.1)}
+.subtotal{display:flex;justify-content:space-between;font-weight:800;font-size:15px;margin-bottom:14px}
+.checkoutbtn{width:100%;background:var(--accent);color:#000;padding:15px 0;border-radius:999px;font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;transition:transform .2s}
+.checkoutbtn:hover{transform:translateY(-2px)}
+.modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:170;background:#141311;border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:44px 40px;width:min(420px,88vw);text-align:center;animation:popin .3s cubic-bezier(.16,.84,.44,1);max-height:88vh;overflow-y:auto}
+@keyframes popin{from{opacity:0;transform:translate(-50%,-46%) scale(.94)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+.modalicon{width:64px;height:64px;border-radius:50%;background:var(--accent);color:#000;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;margin:0 auto 18px}
+.modal h3{font-size:22px}
+.modal p{color:#c8c8c2;font-size:14px;margin:10px 0}
+.modalsub{color:#8c8c86!important;font-size:12.5px!important}
+.toast{position:fixed;left:24px;bottom:24px;z-index:180;background:#fff;color:#000;padding:14px 20px;border-radius:12px;font-weight:700;font-size:13px;box-shadow:0 14px 30px rgba(0,0,0,.4);animation:toastin .3s ease}
+@keyframes toastin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.paymodal{text-align:left}
+.payhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.paytotal{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;font-weight:800;margin:14px 0 20px}
+.paytotal span:last-child{color:var(--accent);font-size:17px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9c9c96;margin-bottom:7px;font-weight:700}
+.field input{width:100%;background:#1b1a17;border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:13px 14px;color:#fff;font-size:14px;font-family:inherit;transition:border-color .2s}
+.field input:focus{outline:none;border-color:var(--accent)}
+.fieldrow{display:flex;gap:12px}
+.fieldrow .field{flex:1}
+.securenote{display:flex;align-items:center;gap:8px;color:#8c8c86;font-size:11.5px;margin:16px 0 4px}
+.spinner{width:52px;height:52px;border-radius:50%;border:4px solid rgba(255,255,255,.15);border-top-color:var(--accent);margin:4px auto 20px;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.detailmodal{width:min(720px,92vw);text-align:left;display:flex;gap:28px;padding:32px;position:relative}
+.detailimg{width:260px;flex:none;border-radius:16px;overflow:hidden;background:#0d0c0b;aspect-ratio:1/1}
+.detailimg img{width:100%;height:100%;object-fit:cover}
+.detailbody{flex:1;display:flex;flex-direction:column}
+.detailname{font-size:24px}
+.detailprice{color:var(--accent);font-weight:800;font-size:19px;margin-top:8px}
+.detaildesc{color:#c8c8c2;font-size:14px;line-height:1.6;margin-top:14px}
+.detailqty{display:flex;align-items:center;gap:14px;margin-top:22px}
+.detailqty button{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.1);color:#fff;font-weight:700;font-size:16px}
+.detailqty button:hover{background:var(--accent);color:#000}
+.detailqty span{font-weight:800;font-size:16px;min-width:20px;text-align:center}
+.detailadd{margin-top:auto;background:#fff;color:#000;padding:14px 0;border-radius:999px;font-weight:800;font-size:13px;letter-spacing:.05em;text-transform:uppercase;transition:all .2s}
+.detailadd:hover{background:var(--accent)}
+@media (max-width:620px){.detailmodal{flex-direction:column}.detailimg{width:100%;aspect-ratio:1.6/1}}
+.cfgsec{background:#0f0e0c;padding:100px 48px 100px}
+.cfgwrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 340px;gap:48px;align-items:start}
+.cfgsteps{display:flex;flex-direction:column;gap:32px}
+.cfgstep h4{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:#9c9c96;margin-bottom:14px}
+.cfgdecks{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.cfgdeck{background:#171613;border:2px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;transition:all .2s;cursor:pointer}
+.cfgdeck.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.cfgdeck img{width:100%;aspect-ratio:1.15/1;object-fit:cover;display:block}
+.cfgdeck .cfglabel{padding:8px 10px;font-size:12px;font-weight:700}
+.cfgswatches{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.swatch{width:56px;height:56px;border-radius:12px;border:2px solid rgba(255,255,255,.1);overflow:hidden;position:relative;transition:all .2s;background:#171613;cursor:pointer}
+.swatch.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.swatch img{width:100%;height:100%;object-fit:cover}
+.swatchname{font-size:10.5px;text-align:center;margin-top:6px;color:#9c9c96}
+.swatchcol{display:flex;flex-direction:column;align-items:center;gap:0;width:66px}
+.cfgtoggle{display:flex;align-items:center;gap:12px;background:#171613;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px 16px;cursor:pointer}
+.cfgtoggle input{width:18px;height:18px;accent-color:var(--accent)}
+.cfgsummary{position:sticky;top:100px;background:#171613;border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:26px}
+.cfgpreview{display:flex;gap:8px;margin-bottom:18px}
+.cfgpreview .pv{flex:1;aspect-ratio:1/1;border-radius:10px;overflow:hidden;background:#0d0c0b}
+.cfgpreview .pv img{width:100%;height:100%;object-fit:cover}
+.cfgtotal{display:flex;justify-content:space-between;font-weight:800;font-size:16px;padding:14px 0;border-top:1px solid rgba(255,255,255,.1);margin-top:6px}
+.cfgtotal span:last-child{color:var(--accent)}
+.cfgtip{background:rgba(232,161,92,.1);border:1px solid rgba(232,161,92,.25);border-radius:12px;padding:12px 14px;font-size:12.5px;color:#e8d9c8;line-height:1.5;margin:14px 0}
+.cfgaddbtn{width:100%;background:var(--accent);color:#000;padding:15px 0;border-radius:999px;font-weight:800;font-size:13px;letter-spacing:.05em;text-transform:uppercase;transition:transform .2s}
+.cfgaddbtn:hover{transform:translateY(-2px)}
+@media (max-width:900px){.cfgwrap{grid-template-columns:1fr}.cfgsummary{position:static}.cfgdecks{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:760px){.navlinks{display:none}.nav{padding:16px 22px}.hero-inner{padding:0 22px}.shopsec{padding:72px 22px 60px}.banner .btxt{padding:0 24px}.cfgsec{padding:72px 22px}}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progressBar"></div>
+
+<nav class="nav" id="navEl">
+<a href="#inicio" class="brand">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.4"/><path d="M5 12c3-3 11-3 14 0" stroke="currentColor" stroke-width="1.4"/><circle cx="7" cy="16" r="1.4" fill="currentColor"/><circle cx="17" cy="16" r="1.4" fill="currentColor"/></svg>
+FINGER SKATE
+</a>
+<div class="navlinks">
+<a href="#inicio">Inicio</a>
+<a href="#tablas">Tablas</a>
+<a href="#rampas">Rampas</a>
+<a href="#accesorios">Accesorios</a>
+<a href="#crea">Crea tu Skate</a>
+<a href="#contacto">Contacto</a>
+</div>
+<div class="navright">
+<button class="cartbtn" onclick="App.toggleCart()" aria-label="Ver cesta">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 7h14l-1.5 9.5a2 2 0 0 1-2 1.7H9a2 2 0 0 1-2-1.7L5.2 4.6A1 1 0 0 0 4.2 4H2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="21" r="1.3" fill="currentColor"/><circle cx="17" cy="21" r="1.3" fill="currentColor"/></svg>
+<span id="cartBadge"></span>
+</button>
+</div>
+</nav>
+
+<section id="inicio" class="hero">
+<img class="cover" id="heroImg" src="images/hero_clean2.jpg" alt="Finger skate sobre un rail de metal">
+<div class="scrim"></div>
+<div class="hero-inner">
+<div class="eyebrow">Finger skate premium · est. 2025</div>
+<h1 class="title">TU ESTILO<br>EN MINIATURA</h1>
+<p class="sub">Tablas, rampas y accesorios de precisión. Añade a la cesta y monta tu propio setup.</p>
+<div class="btnrow">
+<a href="#tablas" class="btn">Comprar tablas
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</a>
+<a href="#rampas" class="btn ghost">Ver rampas</a>
+</div>
+</div>
+<div class="scrolldown">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4v15M6 13l6 6 6-6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+</section>
+
+<section id="tablas" class="shopsec reveal">
+<div class="banner">
+<img src="images/tablas_hero.jpg" alt="Tabla de finger skate">
+<div class="bscrim"></div>
+<div class="btxt">
+<div class="kicker">Catálogo</div>
+<h2 class="sech">Tablas</h2>
+<p class="secp">Madera ligera, grip real y acabados que no pasan desapercibidos.</p>
+</div>
+</div>
+<div class="grid" id="gridTablas"></div>
+</section>
+
+<section id="rampas" class="shopsec reveal">
+<div class="banner">
+<img src="images/rampas_hero.jpg" alt="Rampas y obstáculos de metal">
+<div class="bscrim"></div>
+<div class="btxt">
+<div class="kicker">Setups</div>
+<h2 class="sech">Rampas &amp; obstáculos</h2>
+<p class="secp">Rails, quarters, escaleras y cajones en acero macizo.</p>
+</div>
+</div>
+<div class="grid" id="gridRampas"></div>
+</section>
+
+<section id="accesorios" class="shopsec reveal">
+<div class="banner">
+<img src="images/acc_hero.jpg" alt="Ejes, ruedas, rodamientos y grip tape">
+<div class="bscrim"></div>
+<div class="btxt">
+<div class="kicker">Repuestos</div>
+<h2 class="sech">Accesorios</h2>
+<p class="secp">Todo lo que necesitas para montar y afinar tu tabla.</p>
+</div>
+</div>
+<div class="grid" id="gridAcc"></div>
+</section>
+
+<section id="crea" class="cfgsec reveal">
+<div class="cfgwrap">
+<div class="cfgsteps">
+<div class="kicker">Configurador</div>
+<h2 class="sech" style="margin-top:8px">Crea tu Skate</h2>
+<p class="secp" style="margin-bottom:8px">Elige cada pieza como en el configurador de un coche — te iremos recomendando según lo que vayas montando.</p>
+
+<div class="cfgstep">
+<h4>1. Tabla</h4>
+<div class="cfgdecks" id="cfgDecks"></div>
+</div>
+
+<div class="cfgstep">
+<h4>2. Ejes</h4>
+<div class="cfgswatches" id="cfgTrucks"></div>
+</div>
+
+<div class="cfgstep">
+<h4>3. Ruedas</h4>
+<div class="cfgswatches" id="cfgWheels"></div>
+</div>
+
+<div class="cfgstep">
+<h4>4. Grip</h4>
+<div class="cfgswatches" id="cfgGrips"></div>
+</div>
+
+<div class="cfgstep">
+<h4>5. Rodamientos</h4>
+<label class="cfgtoggle">
+<input type="checkbox" id="cfgBearingsBox" onchange="App.toggleBearings()">
+<span>Añadir rodamientos de precisión (+<span id="bearingPrice"></span>)</span>
+</label>
+</div>
+</div>
+
+<div class="cfgsummary">
+<div class="cfgpreview" id="cfgPreview"></div>
+<div class="cardname">Tu setup</div>
+<div class="cfgtip">💡 <span id="cfgTip"></span></div>
+<div class="cfgtotal"><span>Total</span><span id="cfgTotal"></span></div>
+<button class="cfgaddbtn" onclick="App.addSetup()">Añadir setup a la cesta</button>
+</div>
+</div>
+</section>
+
+<footer id="contacto">
+<div class="footrow">
+<div class="footbrand">FINGER SKATE</div>
+<div class="socials">
+<a class="social" href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor"/></svg></a>
+<a class="social" href="#" aria-label="TikTok"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M14 4v9.6a3.6 3.6 0 1 1-3.4-4.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M14 4c.3 2.3 2 4 4.4 4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></a>
+<a class="social" href="#" aria-label="Correo"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3 7l9 6 9-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</div>
+</div>
+<p class="fine">© 2026 Finger Skate. Envíos simulados — tienda de demostración.</p>
+</footer>
+
+<div class="totop" id="totop" title="Subir">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M6 11l6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+
+<div id="overlays"></div>
+
+<script>
+const PRODUCTS = [
+  {id:"t1",cat:"tablas",name:"Tabla Clásica",price:14.9,img:"images/board_clasica.jpg",
+    desc:"Maple canadiense sin tratar, 34 mm de ancho. Ligera y lista para personalizar a tu gusto."},
+  {id:"t2",cat:"tablas",name:"Tabla Flame",price:16.9,img:"images/board_flame.jpg",
+    desc:"Acabado de llamas blancas sobre fibra negra. Grip de alto agarre y canto biselado."},
+  {id:"t3",cat:"tablas",name:"Tabla Check",price:16.9,img:"images/board_check.jpg",
+    desc:"Estampado ajedrezado blanco y negro. Cóncavo medio, ideal para flips técnicos."},
+  {id:"t4",cat:"tablas",name:"Tabla Wave",price:18.9,img:"images/board_wave.jpg",
+    desc:"Estampado marmolado azul. Forma ancha y estable, perfecta para rampas y manuals."},
+  {id:"r1",cat:"rampas",name:"Rampa Wedge",price:9.9,img:"images/ramp_wedge.jpg",
+    desc:"Cuña de acero con ángulo suave. Ideal para coger velocidad e iniciarte en los saltos."},
+  {id:"r2",cat:"rampas",name:"Quarter Pipe",price:12.9,img:"images/ramp_quarter.jpg",
+    desc:"Transición curva de 90°. Perfecta para airwalks y grinds de entrada."},
+  {id:"r3",cat:"rampas",name:"Set Escaleras + Rail",price:19.9,img:"images/ramp_stairs.jpg",
+    desc:"Seis escalones con pasamanos de acero pulido. El clásico de todo street spot."},
+  {id:"r4",cat:"rampas",name:"Ledge Box",price:11.9,img:"images/ramp_box.jpg",
+    desc:"Cajón bajo con canto metálico, pensado para grinds y slides técnicos."},
+  {id:"r5",cat:"rampas",name:"Rail Metálico",price:8.9,img:"images/ramp_rail.jpg",
+    desc:"Rail recto independiente. Fácil de combinar con cualquier otro obstáculo."},
+  {id:"r6",cat:"rampas",name:"Wedge Ledge",price:10.9,img:"images/ramp_wedge2.jpg",
+    desc:"Cuña con ledge superior: dos obstáculos combinados en uno solo."},
+  {id:"r7",cat:"rampas",name:"Mini Half-Pipe",price:15.9,img:"images/ramp_ubox.jpg",
+    desc:"Transición doble en U, perfecta para encadenar trucos de ida y vuelta."},
+  {id:"r8",cat:"rampas",name:"Pirámide",price:13.9,img:"images/ramp_pyramid.jpg",
+    desc:"Plataforma elevada con cuatro caras en pendiente. Versátil para cualquier ángulo."},
+  {id:"a1",cat:"acc",name:"Set de Ejes",price:6.9,img:"images/acc_ejes.jpg",
+    desc:"Ejes de aluminio ligero y altura estándar. Respuesta ágil en los giros."},
+  {id:"a2",cat:"acc",name:"Ruedas Pro",price:4.9,img:"images/acc_ruedas.jpg",
+    desc:"Goma suave de alto rebote. Rodaje silencioso y muy controlado."},
+  {id:"a3",cat:"acc",name:"Rodamientos",price:3.9,img:"images/acc_rodamientos.jpg",
+    desc:"Precisión ABEC para ruedas rápidas y sin fricción."},
+  {id:"a4",cat:"acc",name:"Tornillería",price:2.5,img:"images/acc_tornilleria.jpg",
+    desc:"Kit completo de tornillos y tuercas para montar tu tabla desde cero."},
+  {id:"a5",cat:"acc",name:"Grip Tape (x2)",price:3.5,img:"images/acc_grip.jpg",
+    desc:"Dos láminas de grip de grano fino. Agarre máximo para tus dedos."}
+];
+const byId = (id) => PRODUCTS.find(p => p.id === id);
+const fmt = (n) => n.toFixed(2).replace('.', ',') + ' €';
+
+const TRUCK_COLORS = [
+  {key:"plata",name:"Plata",filter:"none"},
+  {key:"negro",name:"Negro",filter:"brightness(0.4) contrast(1.3)"},
+  {key:"oro",name:"Oro",filter:"sepia(1) saturate(4) hue-rotate(-15deg) brightness(1.05)"}
+];
+const WHEEL_COLORS = [
+  {key:"blanco",name:"Blanco",filter:"none"},
+  {key:"negro",name:"Negro",filter:"brightness(0.3)"},
+  {key:"naranja",name:"Naranja",filter:"sepia(1) saturate(5) hue-rotate(320deg) brightness(1.05)"}
+];
+const GRIP_COLORS = [
+  {key:"negro",name:"Negro",filter:"none"},
+  {key:"azul",name:"Azul",filter:"brightness(1.6) saturate(3) hue-rotate(185deg)"},
+  {key:"rojo",name:"Rojo",filter:"brightness(1.5) saturate(4) hue-rotate(330deg)"}
+];
+const DECK_TIPS = {
+  t1:"La Clásica es ligera y neutra: combínala con Ruedas Pro para ganar rapidez en los flips.",
+  t2:"La Flame tiene mucho grip: unos Ejes anchos te darán más estabilidad en grinds.",
+  t3:"La Check favorece los flips técnicos: prueba Rodamientos de precisión para más inercia.",
+  t4:"La Wave es ancha y estable: perfecta para practicar en la Quarter Pipe o el Mini Half-Pipe."
+};
+
+const App = {
+  cart: {}, toastSeq: 0,
+  detailId: null, detailQty: 1,
+  cfgDeck: 't1', cfgTruck: 'plata', cfgWheel: 'blanco', cfgGrip: 'negro', cfgBearings: true,
+
+  init(){
+    try {
+      const raw = localStorage.getItem('fs_cart_v1');
+      if (raw) { const c = JSON.parse(raw); if (c && typeof c === 'object') this.cart = c; }
+    } catch(e) {}
+    this.renderGrid('gridTablas', 'tablas');
+    this.renderGrid('gridRampas', 'rampas');
+    this.renderGrid('gridAcc', 'acc');
+    this.renderConfigurator();
+    this.renderCartBadge();
+    this.bindScroll();
+    this.bindReveal();
+    document.getElementById('cfgBearingsBox').checked = this.cfgBearings;
+  },
+
+  persist(){ try { localStorage.setItem('fs_cart_v1', JSON.stringify(this.cart)); } catch(e) {} },
+
+  bindScroll(){
+    const nav = document.getElementById('navEl');
+    const bar = document.getElementById('progressBar');
+    const totop = document.getElementById('totop');
+    const hero = document.getElementById('heroImg');
+    const onScroll = () => {
+      const y = window.scrollY || window.pageYOffset;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (max > 0 ? Math.min(100, (y / max) * 100) : 0) + '%';
+      nav.classList.toggle('scrolled', y > 40);
+      totop.classList.toggle('show', y > 700);
+      hero.style.transform = 'translateY(' + Math.min(70, y * 0.15) + 'px) scale(1.04)';
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    totop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  },
+  bindReveal(){
+    const els = Array.from(document.querySelectorAll('.reveal'));
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('on'); });
+      }, { threshold: 0.12 });
+      els.forEach((el) => io.observe(el));
+    } else { els.forEach((el) => el.classList.add('on')); }
+  },
+
+  cartCount(){ return Object.values(this.cart).reduce((a,b)=>a+b,0); },
+  cartTotal(){ return PRODUCTS.reduce((s,p)=> s + (this.cart[p.id]||0)*p.price, 0); },
+
+  renderCartBadge(){
+    const el = document.getElementById('cartBadge');
+    const n = this.cartCount();
+    el.innerHTML = n > 0 ? '<span class="badge">' + n + '</span>' : '';
+  },
+
+  renderGrid(containerId, cat){
+    const el = document.getElementById(containerId);
+    const items = PRODUCTS.filter(p => p.cat === cat);
+    el.innerHTML = items.map(p => {
+      const qty = this.cart[p.id] || 0;
+      return '<div class="card">' +
+        '<div class="cardimg" onclick="App.openDetail(\'' + p.id + '\')">' +
+          '<img src="' + p.img + '" alt="' + p.name + '">' +
+          (qty > 0 ? '<span class="qtybadge">' + qty + '</span>' : '') +
+        '</div>' +
+        '<div class="cardbody">' +
+          '<div class="cardname">' + p.name + '</div>' +
+          '<div class="cardprice">' + fmt(p.price) + '</div>' +
+          '<button class="addbtn" onclick="App.addToCart(\'' + p.id + '\')">Añadir a la cesta</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  },
+  refreshGrids(){
+    this.renderGrid('gridTablas', 'tablas');
+    this.renderGrid('gridRampas', 'rampas');
+    this.renderGrid('gridAcc', 'acc');
+  },
+
+  showToast(msg){
+    const seq = ++this.toastSeq;
+    let el = document.getElementById('toastEl');
+    if (el) el.remove();
+    el = document.createElement('div');
+    el.id = 'toastEl';
+    el.className = 'toast';
+    el.textContent = msg;
+    document.body.appendChild(el);
+    setTimeout(() => { if (this.toastSeq === seq) { const t = document.getElementById('toastEl'); if (t) t.remove(); } }, 2200);
+  },
+
+  addToCart(id){
+    this.cart[id] = (this.cart[id] || 0) + 1;
+    this.persist();
+    this.renderCartBadge();
+    this.refreshGrids();
+    if (this.cartDrawerOpen) this.renderDrawer();
+    this.showToast(byId(id).name + ' añadida a la cesta');
+  },
+  changeQty(id, delta){
+    this.cart[id] = (this.cart[id] || 0) + delta;
+    if (this.cart[id] <= 0) delete this.cart[id];
+    this.persist();
+    this.renderCartBadge();
+    this.refreshGrids();
+    this.renderDrawer();
+  },
+  removeItem(id){
+    delete this.cart[id];
+    this.persist();
+    this.renderCartBadge();
+    this.refreshGrids();
+    this.renderDrawer();
+  },
+
+  cartDrawerOpen: false,
+  toggleCart(){
+    this.cartDrawerOpen = !this.cartDrawerOpen;
+    if (this.cartDrawerOpen) { this.renderDrawer(); } else { this.closeOverlay('drawerWrap'); }
+  },
+  closeCart(){ this.cartDrawerOpen = false; this.closeOverlay('drawerWrap'); },
+  renderDrawer(){
+    const items = PRODUCTS.filter(p => this.cart[p.id]);
+    const linesHtml = items.length === 0
+      ? '<div class="emptycart">Tu cesta está vacía.<br>Añade alguna tabla, rampa o accesorio.</div>'
+      : items.map(p => {
+          const qty = this.cart[p.id];
+          return '<div class="drawerline">' +
+            '<img src="' + p.img + '" alt="' + p.name + '">' +
+            '<div class="dlinfo">' +
+              '<div class="dlname">' + p.name + '</div>' +
+              '<div class="dlprice">' + fmt(p.price) + ' / ud.</div>' +
+              '<div class="qtyctrl">' +
+                '<button onclick="App.changeQty(\'' + p.id + '\',-1)">-</button>' +
+                '<span>' + qty + '</span>' +
+                '<button onclick="App.changeQty(\'' + p.id + '\',1)">+</button>' +
+              '</div>' +
+            '</div>' +
+            '<div class="dlright">' +
+              '<div class="dltotal">' + fmt(p.price * qty) + '</div>' +
+              '<button class="rm" onclick="App.removeItem(\'' + p.id + '\')">Quitar</button>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+    const html =
+      '<div class="backdrop" onclick="App.closeCart()"></div>' +
+      '<aside class="drawer">' +
+        '<div class="drawerhead"><span>Tu cesta</span><button class="iconbtn" onclick="App.closeCart()">✕</button></div>' +
+        '<div class="drawerlist">' + linesHtml + '</div>' +
+        '<div class="drawerfoot">' +
+          '<div class="subtotal"><span>Subtotal</span><span>' + fmt(this.cartTotal()) + '</span></div>' +
+          '<button class="checkoutbtn" onclick="App.openPayment()">Finalizar compra</button>' +
+        '</div>' +
+      '</aside>';
+    this.showOverlay('drawerWrap', html);
+  },
+
+  openPayment(){
+    if (Object.keys(this.cart).length === 0) return;
+    this.cartDrawerOpen = false;
+    const html =
+      '<div class="backdrop" onclick="App.closePayment()"></div>' +
+      '<div class="modal paymodal">' +
+        '<div class="payhead"><h3 style="font-size:19px">Pago</h3><button class="iconbtn" onclick="App.closePayment()">✕</button></div>' +
+        '<div class="paytotal"><span>Total a pagar</span><span>' + fmt(this.cartTotal()) + '</span></div>' +
+        '<div class="field"><label>Nombre completo</label><input type="text" id="payName" placeholder="Nombre y apellidos"></div>' +
+        '<div class="field"><label>Email</label><input type="email" id="payEmail" placeholder="tucorreo@ejemplo.com"></div>' +
+        '<div class="field"><label>Número de tarjeta (simulada)</label><input type="text" id="payCard" inputmode="numeric" maxlength="19" placeholder="4242 4242 4242 4242"></div>' +
+        '<div class="fieldrow">' +
+          '<div class="field"><label>Caducidad</label><input type="text" id="payExpiry" placeholder="MM/AA" maxlength="5"></div>' +
+          '<div class="field"><label>CVC</label><input type="text" id="payCvc" inputmode="numeric" maxlength="3" placeholder="123"></div>' +
+        '</div>' +
+        '<button class="checkoutbtn" onclick="App.submitPayment()">Pagar ' + fmt(this.cartTotal()) + '</button>' +
+        '<div class="securenote"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.5"/></svg>Entorno de pago simulado — no se procesa ningún cargo real.</div>' +
+      '</div>';
+    this.showOverlay('drawerWrap', html);
+    document.getElementById('payCard').addEventListener('input', (e) => {
+      const digits = e.target.value.replace(/\D/g, '').slice(0, 16);
+      e.target.value = digits.replace(/(.{4})/g, '$1 ').trim();
+    });
+    document.getElementById('payExpiry').addEventListener('input', (e) => {
+      let v = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
+      if (v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
+      e.target.value = v;
+    });
+    document.getElementById('payCvc').addEventListener('input', (e) => {
+      e.target.value = e.target.value.replace(/\D/g, '').slice(0, 3);
+    });
+  },
+  closePayment(){ this.renderDrawer(); this.cartDrawerOpen = true; },
+
+  submitPayment(){
+    const name = document.getElementById('payName').value.trim();
+    const email = document.getElementById('payEmail').value.trim();
+    const card = document.getElementById('payCard').value.replace(/\D/g,'');
+    if (!name || !email || card.length < 12) {
+      this.showToast('Rellena nombre, email y un número de tarjeta válido');
+      return;
+    }
+    this.showOverlay('drawerWrap',
+      '<div class="backdrop"></div>' +
+      '<div class="modal" style="text-align:center">' +
+        '<div class="spinner"></div>' +
+        '<h3 style="font-size:18px">Procesando pago…</h3>' +
+        '<p class="modalsub">Un momento, estamos confirmando tu pedido simulado.</p>' +
+      '</div>'
+    );
+    setTimeout(() => {
+      const order = 'FS-' + Math.floor(1000 + Math.random() * 9000);
+      this.cart = {};
+      this.persist();
+      this.renderCartBadge();
+      this.refreshGrids();
+      this.showOverlay('drawerWrap',
+        '<div class="backdrop" onclick="App.closeAll()"></div>' +
+        '<div class="modal">' +
+          '<div class="modalicon">✓</div>' +
+          '<h3>¡Pago realizado!</h3>' +
+          '<p>Número de pedido <b>' + order + '</b></p>' +
+          '<p class="modalsub">Compra de demostración — no se ha realizado ningún cargo real. Te hemos "enviado" la confirmación a ' + email + '. ¡Gracias por pasarte por la tienda!</p>' +
+          '<button class="btn" style="margin:14px auto 0" onclick="App.closeAll()">Seguir comprando</button>' +
+        '</div>'
+      );
+    }, 1400);
+  },
+  closeAll(){ this.cartDrawerOpen = false; this.closeOverlay('drawerWrap'); },
+
+  openDetail(id){
+    this.detailId = id; this.detailQty = 1;
+    this.renderDetail();
+  },
+  renderDetail(){
+    const p = byId(this.detailId);
+    if (!p) return;
+    const html =
+      '<div class="backdrop" onclick="App.closeDetail()"></div>' +
+      '<div class="modal detailmodal">' +
+        '<div class="detailimg"><img src="' + p.img + '" alt="' + p.name + '"></div>' +
+        '<div class="detailbody">' +
+          '<div class="detailname">' + p.name + '</div>' +
+          '<div class="detailprice">' + fmt(p.price) + '</div>' +
+          '<p class="detaildesc">' + p.desc + '</p>' +
+          '<div class="detailqty">' +
+            '<button onclick="App.decDetailQty()">-</button>' +
+            '<span id="detailQtyVal">' + this.detailQty + '</span>' +
+            '<button onclick="App.incDetailQty()">+</button>' +
+          '</div>' +
+          '<button class="detailadd" onclick="App.addDetailToCart()">Añadir a la cesta</button>' +
+        '</div>' +
+        '<button class="iconbtn" style="position:absolute;top:16px;right:16px" onclick="App.closeDetail()">✕</button>' +
+      '</div>';
+    this.showOverlay('detailWrap', html);
+  },
+  closeDetail(){ this.detailId = null; this.closeOverlay('detailWrap'); },
+  incDetailQty(){ this.detailQty++; document.getElementById('detailQtyVal').textContent = this.detailQty; },
+  decDetailQty(){ this.detailQty = Math.max(1, this.detailQty - 1); document.getElementById('detailQtyVal').textContent = this.detailQty; },
+  addDetailToCart(){
+    const id = this.detailId;
+    if (!id) return;
+    this.cart[id] = (this.cart[id] || 0) + this.detailQty;
+    this.persist();
+    this.renderCartBadge();
+    this.refreshGrids();
+    this.closeDetail();
+    this.showToast(byId(id).name + ' añadida a la cesta');
+  },
+
+  showOverlay(key, html){
+    let holder = document.getElementById(key);
+    if (!holder) {
+      holder = document.createElement('div');
+      holder.id = key;
+      document.getElementById('overlays').appendChild(holder);
+    }
+    holder.innerHTML = html;
+  },
+  closeOverlay(key){
+    const holder = document.getElementById(key);
+    if (holder) holder.innerHTML = '';
+  },
+
+  selectDeck(id){ this.cfgDeck = id; this.renderConfigurator(); },
+  selectTruck(key){ this.cfgTruck = key; this.renderConfigurator(); },
+  selectWheel(key){ this.cfgWheel = key; this.renderConfigurator(); },
+  selectGrip(key){ this.cfgGrip = key; this.renderConfigurator(); },
+  toggleBearings(){ this.cfgBearings = document.getElementById('cfgBearingsBox').checked; this.renderConfigurator(); },
+
+  renderConfigurator(){
+    const decks = PRODUCTS.filter(p => p.cat === 'tablas');
+    document.getElementById('cfgDecks').innerHTML = decks.map(p =>
+      '<div class="cfgdeck ' + (p.id === this.cfgDeck ? 'on' : '') + '" onclick="App.selectDeck(\'' + p.id + '\')">' +
+        '<img src="' + p.img + '" alt="' + p.name + '"><div class="cfglabel">' + p.name + '</div>' +
+      '</div>'
+    ).join('');
+
+    const truckImg = byId('a1').img, wheelImg = byId('a2').img, gripImg = byId('a5').img;
+    const swatchHtml = (colors, img, current, selFn) => colors.map(c =>
+      '<div class="swatchcol">' +
+        '<div class="swatch ' + (c.key === current ? 'on' : '') + '" onclick="App.' + selFn + '(\'' + c.key + '\')">' +
+          '<img src="' + img + '" style="filter:' + c.filter + '"></div>' +
+        '<div class="swatchname">' + c.name + '</div>' +
+      '</div>'
+    ).join('');
+    document.getElementById('cfgTrucks').innerHTML = swatchHtml(TRUCK_COLORS, truckImg, this.cfgTruck, 'selectTruck');
+    document.getElementById('cfgWheels').innerHTML = swatchHtml(WHEEL_COLORS, wheelImg, this.cfgWheel, 'selectWheel');
+    document.getElementById('cfgGrips').innerHTML = swatchHtml(GRIP_COLORS, gripImg, this.cfgGrip, 'selectGrip');
+
+    const truckFilter = (TRUCK_COLORS.find(c => c.key === this.cfgTruck) || {}).filter || 'none';
+    const wheelFilter = (WHEEL_COLORS.find(c => c.key === this.cfgWheel) || {}).filter || 'none';
+    const gripFilter = (GRIP_COLORS.find(c => c.key === this.cfgGrip) || {}).filter || 'none';
+    const deckImg = byId(this.cfgDeck).img;
+    document.getElementById('cfgPreview').innerHTML =
+      '<div class="pv"><img src="' + deckImg + '"></div>' +
+      '<div class="pv"><img src="' + truckImg + '" style="filter:' + truckFilter + '"></div>' +
+      '<div class="pv"><img src="' + wheelImg + '" style="filter:' + wheelFilter + '"></div>' +
+      '<div class="pv"><img src="' + gripImg + '" style="filter:' + gripFilter + '"></div>';
+
+    document.getElementById('cfgTip').textContent = DECK_TIPS[this.cfgDeck] || '';
+    document.getElementById('bearingPrice').textContent = fmt(byId('a3').price);
+
+    let total = byId(this.cfgDeck).price + byId('a1').price + byId('a2').price + byId('a5').price;
+    if (this.cfgBearings) total += byId('a3').price;
+    document.getElementById('cfgTotal').textContent = fmt(total);
+  },
+
+  addSetup(){
+    this.cart[this.cfgDeck] = (this.cart[this.cfgDeck] || 0) + 1;
+    this.cart['a1'] = (this.cart['a1'] || 0) + 1;
+    this.cart['a2'] = (this.cart['a2'] || 0) + 1;
+    this.cart['a5'] = (this.cart['a5'] || 0) + 1;
+    if (this.cfgBearings) this.cart['a3'] = (this.cart['a3'] || 0) + 1;
+    this.persist();
+    this.renderCartBadge();
+    this.refreshGrids();
+    this.showToast('Setup completo añadido a la cesta (color de vista previa)');
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => App.init());
+</script>
+</body>
+</html>

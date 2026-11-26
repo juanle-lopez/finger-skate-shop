@@ -48,6 +48,10 @@ section{position:relative;width:100%;overflow:hidden}
 @keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,10px)}}
 .reveal{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.16,.84,.44,1),transform .9s cubic-bezier(.16,.84,.44,1)}
 .reveal.on{opacity:1;transform:none}
+.reveal-item{opacity:0;transform:translateY(26px);transition:opacity .65s cubic-bezier(.16,.84,.44,1),transform .65s cubic-bezier(.16,.84,.44,1)}
+.reveal-item.on{opacity:1;transform:none}
+.reveal-pop{opacity:0;transform:scale(.85);transition:opacity .5s ease,transform .5s cubic-bezier(.34,1.56,.64,1)}
+.reveal-pop.on{opacity:1;transform:scale(1)}
 .shopsec{padding:100px 48px 90px;max-width:1280px;margin:0 auto}
 .banner{position:relative;height:38vh;min-height:260px;border-radius:22px;overflow:hidden;margin-bottom:40px}
 .banner img{width:100%;height:100%;object-fit:cover}
@@ -218,9 +222,9 @@ FINGER SKATE
 <img src="images/tablas_hero.jpg" alt="Tabla de finger skate">
 <div class="bscrim"></div>
 <div class="btxt">
-<div class="kicker">Catálogo</div>
-<h2 class="sech">Tablas</h2>
-<p class="secp">Madera ligera, grip real y acabados que no pasan desapercibidos.</p>
+<div class="kicker reveal-item">Catálogo</div>
+<h2 class="sech reveal-item" style="transition-delay:.1s">Tablas</h2>
+<p class="secp reveal-item" style="transition-delay:.2s">Madera ligera, grip real y acabados que no pasan desapercibidos.</p>
 </div>
 </div>
 <div class="grid" id="gridTablas"></div>
@@ -231,9 +235,9 @@ FINGER SKATE
 <img src="images/rampas_hero.jpg" alt="Rampas y obstáculos de metal">
 <div class="bscrim"></div>
 <div class="btxt">
-<div class="kicker">Setups</div>
-<h2 class="sech">Rampas &amp; obstáculos</h2>
-<p class="secp">Rails, quarters, escaleras y cajones en acero macizo.</p>
+<div class="kicker reveal-item">Setups</div>
+<h2 class="sech reveal-item" style="transition-delay:.1s">Rampas &amp; obstáculos</h2>
+<p class="secp reveal-item" style="transition-delay:.2s">Rails, quarters, escaleras y cajones en acero macizo.</p>
 </div>
 </div>
 <div class="grid" id="gridRampas"></div>
@@ -244,9 +248,9 @@ FINGER SKATE
 <img src="images/acc_hero.jpg" alt="Ejes, ruedas, rodamientos y grip tape">
 <div class="bscrim"></div>
 <div class="btxt">
-<div class="kicker">Repuestos</div>
-<h2 class="sech">Accesorios</h2>
-<p class="secp">Todo lo que necesitas para montar y afinar tu tabla.</p>
+<div class="kicker reveal-item">Repuestos</div>
+<h2 class="sech reveal-item" style="transition-delay:.1s">Accesorios</h2>
+<p class="secp reveal-item" style="transition-delay:.2s">Todo lo que necesitas para montar y afinar tu tabla.</p>
 </div>
 </div>
 <div class="grid" id="gridAcc"></div>
@@ -255,9 +259,9 @@ FINGER SKATE
 <section id="crea" class="cfgsec reveal">
 <div class="cfgwrap">
 <div class="cfgsteps">
-<div class="kicker">Configurador</div>
-<h2 class="sech" style="margin-top:8px">Crea tu Skate</h2>
-<p class="secp" style="margin-bottom:8px">Elige cada pieza como en el configurador de un coche — te iremos recomendando según lo que vayas montando.</p>
+<div class="kicker reveal-item">Configurador</div>
+<h2 class="sech reveal-item" style="margin-top:8px;transition-delay:.1s">Crea tu Skate</h2>
+<p class="secp reveal-item" style="margin-bottom:8px;transition-delay:.2s">Elige cada pieza como en el configurador de un coche — te iremos recomendando según lo que vayas montando.</p>
 
 <div class="cfgstep">
 <h4>1. Tabla</h4>
@@ -388,13 +392,13 @@ const App = {
       const raw = localStorage.getItem('fs_cart_v1');
       if (raw) { const c = JSON.parse(raw); if (c && typeof c === 'object') this.cart = c; }
     } catch(e) {}
+    this.bindReveal();
     this.renderGrid('gridTablas', 'tablas');
     this.renderGrid('gridRampas', 'rampas');
     this.renderGrid('gridAcc', 'acc');
     this.renderConfigurator();
     this.renderCartBadge();
     this.bindScroll();
-    this.bindReveal();
     document.getElementById('cfgBearingsBox').checked = this.cfgBearings;
   },
 
@@ -418,13 +422,16 @@ const App = {
     totop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   },
   bindReveal(){
-    const els = Array.from(document.querySelectorAll('.reveal'));
-    if ('IntersectionObserver' in window) {
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('on'); });
-      }, { threshold: 0.12 });
-      els.forEach((el) => io.observe(el));
-    } else { els.forEach((el) => el.classList.add('on')); }
+    const els = Array.from(document.querySelectorAll('.reveal, .reveal-item'));
+    this._io = ('IntersectionObserver' in window) ? new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('on'); });
+    }, { threshold: 0.12 }) : null;
+    if (this._io) { els.forEach((el) => this._io.observe(el)); }
+    else { els.forEach((el) => el.classList.add('on')); }
+  },
+  observeReveal(nodeList){
+    if (this._io) { nodeList.forEach((el) => this._io.observe(el)); }
+    else { nodeList.forEach((el) => el.classList.add('on')); }
   },
 
   cartCount(){ return Object.values(this.cart).reduce((a,b)=>a+b,0); },
@@ -439,12 +446,12 @@ const App = {
   renderGrid(containerId, cat){
     const el = document.getElementById(containerId);
     const items = PRODUCTS.filter(p => p.cat === cat);
-    el.innerHTML = items.map(p => {
+    el.innerHTML = items.map((p, i) => {
       const qty = this.cart[p.id] || 0;
-      return '<div class="card">' +
+      return '<div class="card reveal-pop" style="transition-delay:' + ((i % 4) * 0.08) + 's">' +
         '<div class="cardimg" onclick="App.openDetail(\'' + p.id + '\')">' +
           '<img src="' + p.img + '" alt="' + p.name + '">' +
-          (qty > 0 ? '<span class="qtybadge">' + qty + '</span>' : '') +
+          '<span class="qtybadge" data-qty-for="' + p.id + '" style="display:' + (qty > 0 ? 'flex' : 'none') + '">' + qty + '</span>' +
         '</div>' +
         '<div class="cardbody">' +
           '<div class="cardname">' + p.name + '</div>' +
@@ -453,11 +460,15 @@ const App = {
         '</div>' +
       '</div>';
     }).join('');
+    this.observeReveal(el.querySelectorAll('.reveal-pop'));
   },
   refreshGrids(){
-    this.renderGrid('gridTablas', 'tablas');
-    this.renderGrid('gridRampas', 'rampas');
-    this.renderGrid('gridAcc', 'acc');
+    document.querySelectorAll('[data-qty-for]').forEach((el) => {
+      const id = el.getAttribute('data-qty-for');
+      const qty = this.cart[id] || 0;
+      el.textContent = qty;
+      el.style.display = qty > 0 ? 'flex' : 'none';
+    });
   },
 
   showToast(msg){
@@ -669,17 +680,19 @@ const App = {
   toggleBearings(){ this.cfgBearings = document.getElementById('cfgBearingsBox').checked; this.renderConfigurator(); },
 
   renderConfigurator(){
+    const firstPaint = !this._cfgRevealed;
+    const popClass = firstPaint ? ' reveal-pop' : '';
     const decks = PRODUCTS.filter(p => p.cat === 'tablas');
-    document.getElementById('cfgDecks').innerHTML = decks.map(p =>
-      '<div class="cfgdeck ' + (p.id === this.cfgDeck ? 'on' : '') + '" onclick="App.selectDeck(\'' + p.id + '\')">' +
+    document.getElementById('cfgDecks').innerHTML = decks.map((p, i) =>
+      '<div class="cfgdeck' + popClass + ' ' + (p.id === this.cfgDeck ? 'on' : '') + '" style="transition-delay:' + (i*0.07) + 's" onclick="App.selectDeck(\'' + p.id + '\')">' +
         '<img src="' + p.img + '" alt="' + p.name + '"><div class="cfglabel">' + p.name + '</div>' +
       '</div>'
     ).join('');
 
     const truckImg = byId('a1').img, wheelImg = byId('a2').img, gripImg = byId('a5').img;
-    const swatchHtml = (colors, img, current, selFn) => colors.map(c =>
+    const swatchHtml = (colors, img, current, selFn) => colors.map((c, i) =>
       '<div class="swatchcol">' +
-        '<div class="swatch ' + (c.key === current ? 'on' : '') + '" onclick="App.' + selFn + '(\'' + c.key + '\')">' +
+        '<div class="swatch' + popClass + ' ' + (c.key === current ? 'on' : '') + '" style="transition-delay:' + (i*0.07) + 's" onclick="App.' + selFn + '(\'' + c.key + '\')">' +
           '<img src="' + img + '" style="filter:' + c.filter + '"></div>' +
         '<div class="swatchname">' + c.name + '</div>' +
       '</div>'
@@ -687,6 +700,10 @@ const App = {
     document.getElementById('cfgTrucks').innerHTML = swatchHtml(TRUCK_COLORS, truckImg, this.cfgTruck, 'selectTruck');
     document.getElementById('cfgWheels').innerHTML = swatchHtml(WHEEL_COLORS, wheelImg, this.cfgWheel, 'selectWheel');
     document.getElementById('cfgGrips').innerHTML = swatchHtml(GRIP_COLORS, gripImg, this.cfgGrip, 'selectGrip');
+    if (firstPaint) {
+      this.observeReveal(document.querySelectorAll('#cfgDecks .reveal-pop, #cfgTrucks .reveal-pop, #cfgWheels .reveal-pop, #cfgGrips .reveal-pop'));
+      this._cfgRevealed = true;
+    }
 
     const truckFilter = (TRUCK_COLORS.find(c => c.key === this.cfgTruck) || {}).filter || 'none';
     const wheelFilter = (WHEEL_COLORS.find(c => c.key === this.cfgWheel) || {}).filter || 'none';

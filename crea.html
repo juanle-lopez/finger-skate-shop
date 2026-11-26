@@ -117,6 +117,63 @@ FINGER SKATE
 </div>
 </section>
 
+<section id="disena" class="cfgsec reveal" style="padding-top:0">
+<div class="disenowrap">
+<div class="disenocanvaswrap reveal-item">
+<canvas id="designerCanvas" width="300" height="620"></canvas>
+<p class="disenohint">Toca una capa y arrástrala para moverla</p>
+</div>
+<div class="disenopanel">
+<div class="kicker reveal-item">Editor gráfico</div>
+<h2 class="sech reveal-item" style="margin-top:8px;transition-delay:.1s">Diseña tu gráfico</h2>
+<p class="secp reveal-item" style="margin-bottom:22px;transition-delay:.2s">Sube tu propia imagen, añade texto y elige el color base — como un fingerboard impreso a medida.</p>
+
+<div class="disenogroup reveal-item">
+<h4>Color base</h4>
+<div class="colorswatches" id="designerColors"></div>
+</div>
+
+<div class="disenogroup reveal-item">
+<h4>Imagen</h4>
+<label class="filebtn">Subir imagen
+<input type="file" id="designerFileInput" accept="image/*" style="display:none">
+</label>
+</div>
+
+<div class="disenogroup reveal-item">
+<h4>Texto</h4>
+<input type="text" id="designerTextInput" class="disenotext" placeholder="Escribe algo..." maxlength="24">
+<div class="disenorow">
+<input type="color" id="designerTextColor" value="#ffffff" class="disenocolor">
+<select id="designerFont" class="disenoselect">
+<option value="Archivo Black">Archivo Black</option>
+<option value="Inter">Inter</option>
+<option value="Georgia">Georgia</option>
+<option value="Courier New">Courier New</option>
+</select>
+<button class="btn ghost" onclick="App.designerAddText()">Añadir</button>
+</div>
+</div>
+
+<div class="disenogroup" id="designerLayerControls" style="display:none">
+<h4>Capa seleccionada</h4>
+<div class="disenorow">
+<button class="iconbtn" style="background:rgba(255,255,255,.1)" onclick="App.designerScaleSel(0.9)">－</button>
+<button class="iconbtn" style="background:rgba(255,255,255,.1)" onclick="App.designerScaleSel(1.1)">＋</button>
+<button class="iconbtn" style="background:rgba(255,255,255,.1)" onclick="App.designerRotateSel(-15)">⟲</button>
+<button class="iconbtn" style="background:rgba(255,255,255,.1)" onclick="App.designerRotateSel(15)">⟳</button>
+<button class="rm" onclick="App.designerDeleteSel()">Eliminar capa</button>
+</div>
+</div>
+
+<button class="rm" style="margin-top:4px" onclick="App.designerReset()">Vaciar diseño</button>
+
+<div class="cfgtotal" style="margin-top:22px"><span>Precio</span><span>24,90 €</span></div>
+<button class="cfgaddbtn" onclick="App.designerAddToCart()">Añadir mi diseño a la cesta</button>
+</div>
+</div>
+</section>
+
 <footer id="contacto">
 <div class="footrow">
 <div class="footbrand">FINGER SKATE</div>

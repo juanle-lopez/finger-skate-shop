@@ -68,7 +68,7 @@ const PRODUCTS = [
     specs:[["Material","Lija de grano fino"],["Unidades","2 láminas"],["Medidas","4 x 10 cm c/u"],["Compatibilidad","Cualquier tabla estándar"]],
     bullets:["Agarre máximo incluso con los dedos sudados","Grano fino: no raya la piel","Recortable a la forma exacta de tu tabla"]}
 ];
-const byId = (id) => PRODUCTS.find(p => p.id === id);
+const byId = (id) => PRODUCTS.find(p => p.id === id) || (window.App && App.customItems && App.customItems[id]);
 const fmt = (n) => n.toFixed(2).replace('.', ',') + ' €';
 
 const KITS = [
@@ -121,12 +121,18 @@ const App = {
   detailId: null, detailQty: 1,
   cfgDeck: 't1', cfgTruck: 'plata', cfgWheel: 'blanco', cfgGrip: 'negro', cfgBearings: true,
 
+  customItems: {},
   init(){
     try {
       const raw = localStorage.getItem('fs_cart_v1');
       if (raw) { const c = JSON.parse(raw); if (c && typeof c === 'object') this.cart = c; }
     } catch(e) {}
+    try {
+      const rawc = localStorage.getItem('fs_custom_v1');
+      if (rawc) { const c = JSON.parse(rawc); if (c && typeof c === 'object') this.customItems = c; }
+    } catch(e) {}
     this.bindReveal();
+    if (document.getElementById('designerCanvas')) this.initDesigner();
     if (document.getElementById('gridTablas')) this.renderGrid('gridTablas', 'tablas');
     if (document.getElementById('gridRampas')) this.renderGrid('gridRampas', 'rampas');
     if (document.getElementById('gridAcc')) this.renderGrid('gridAcc', 'acc');
@@ -140,6 +146,7 @@ const App = {
   },
 
   persist(){ try { localStorage.setItem('fs_cart_v1', JSON.stringify(this.cart)); } catch(e) {} },
+  persistCustom(){ try { localStorage.setItem('fs_custom_v1', JSON.stringify(this.customItems)); } catch(e) {} },
 
   bindScroll(){
     const nav = document.getElementById('navEl');
@@ -172,7 +179,7 @@ const App = {
   },
 
   cartCount(){ return Object.values(this.cart).reduce((a,b)=>a+b,0); },
-  cartTotal(){ return PRODUCTS.reduce((s,p)=> s + (this.cart[p.id]||0)*p.price, 0); },
+  cartTotal(){ return Object.keys(this.cart).reduce((s,id)=>{ const p = byId(id); return s + (p ? (this.cart[id]||0)*p.price : 0); }, 0); },
 
   renderCartBadge(){
     const el = document.getElementById('cartBadge');
@@ -311,7 +318,7 @@ const App = {
   },
   closeCart(){ this.cartDrawerOpen = false; this.closeOverlay('drawerWrap'); },
   renderDrawer(){
-    const items = PRODUCTS.filter(p => this.cart[p.id]);
+    const items = Object.keys(this.cart).filter((id) => this.cart[id] > 0).map((id) => byId(id)).filter(Boolean);
     const linesHtml = items.length === 0
       ? '<div class="emptycart">Tu cesta está vacía.<br>Añade alguna tabla, rampa o accesorio.</div>'
       : items.map(p => {
@@ -553,6 +560,193 @@ const App = {
     this.renderCartBadge();
     this.refreshGrids();
     this.showToast('Setup completo añadido a la cesta (color de vista previa)');
+  },
+
+  initDesigner(){
+    const canvas = document.getElementById('designerCanvas');
+    const ctx = canvas.getContext('2d');
+    this._dz = { canvas, ctx, layers: [], selected: null, dragging: false, dragOffset: {x:0,y:0}, baseColor: '#141311' };
+    const dz = this._dz;
+    this.designerRenderColors();
+    this.designerDraw();
+
+    const pos = (e) => {
+      const r = canvas.getBoundingClientRect();
+      const t = e.touches && e.touches[0];
+      const cx = (t ? t.clientX : e.clientX) - r.left;
+      const cy = (t ? t.clientY : e.clientY) - r.top;
+      return { x: cx * canvas.width / r.width, y: cy * canvas.height / r.height };
+    };
+    const hit = (p) => {
+      for (let i = dz.layers.length - 1; i >= 0; i--) {
+        const l = dz.layers[i];
+        const dx = p.x - l.x, dy = p.y - l.y;
+        const c = Math.cos(-l.rot*Math.PI/180), s = Math.sin(-l.rot*Math.PI/180);
+        const lx = dx*c - dy*s, ly = dx*s + dy*c;
+        const hw = (l.w||80)/2*l.scale, hh = (l.h||40)/2*l.scale;
+        if (Math.abs(lx) <= hw && Math.abs(ly) <= hh) return l;
+      }
+      return null;
+    };
+    const down = (e) => {
+      const p = pos(e);
+      const l = hit(p);
+      dz.selected = l;
+      if (l) { dz.dragging = true; dz.dragOffset = { x: p.x - l.x, y: p.y - l.y }; }
+      this.designerUpdateLayerPanel();
+      this.designerDraw();
+      e.preventDefault();
+    };
+    const move = (e) => {
+      if (!dz.dragging || !dz.selected) return;
+      const p = pos(e);
+      dz.selected.x = p.x - dz.dragOffset.x;
+      dz.selected.y = p.y - dz.dragOffset.y;
+      this.designerDraw();
+      e.preventDefault();
+    };
+    const up = () => { dz.dragging = false; };
+    canvas.addEventListener('mousedown', down);
+    canvas.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+    canvas.addEventListener('touchstart', down, { passive: false });
+    canvas.addEventListener('touchmove', move, { passive: false });
+    window.addEventListener('touchend', up);
+
+    const fileInput = document.getElementById('designerFileInput');
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const img = new Image();
+        img.onload = () => {
+          const maxW = dz.canvas.width * 0.7;
+          const scale0 = Math.min(1, maxW / img.width);
+          const l = { type:'image', img, x: dz.canvas.width/2, y: dz.canvas.height/2, w: img.width*scale0, h: img.height*scale0, scale:1, rot:0 };
+          dz.layers.push(l);
+          dz.selected = l;
+          this.designerUpdateLayerPanel();
+          this.designerDraw();
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  },
+
+  designerRenderColors(){
+    const colors = ['#141311','#ffffff','#e8a15c','#2b6cb0','#2f855a','#9b2c2c','#6b46c1','#1a202c'];
+    document.getElementById('designerColors').innerHTML = colors.map((c) =>
+      '<span class="cswatch" style="background:' + c + '" onclick="App.designerSetColor(\'' + c + '\')"></span>'
+    ).join('');
+  },
+  designerSetColor(c){ this._dz.baseColor = c; this.designerDraw(); },
+
+  designerAddText(){
+    const input = document.getElementById('designerTextInput');
+    const text = input.value.trim();
+    if (!text) return;
+    const color = document.getElementById('designerTextColor').value;
+    const font = document.getElementById('designerFont').value;
+    const dz = this._dz;
+    const l = { type:'text', text, color, font, size:30, x: dz.canvas.width/2, y: dz.canvas.height/2, w: Math.max(40, text.length*17), h:36, scale:1, rot:0 };
+    dz.layers.push(l);
+    dz.selected = l;
+    input.value = '';
+    this.designerUpdateLayerPanel();
+    this.designerDraw();
+  },
+
+  designerUpdateLayerPanel(){
+    const el = document.getElementById('designerLayerControls');
+    if (el) el.style.display = this._dz.selected ? 'block' : 'none';
+  },
+  designerScaleSel(f){ if (!this._dz.selected) return; this._dz.selected.scale = Math.max(0.3, Math.min(3, this._dz.selected.scale * f)); this.designerDraw(); },
+  designerRotateSel(deg){ if (!this._dz.selected) return; this._dz.selected.rot = (this._dz.selected.rot + deg) % 360; this.designerDraw(); },
+  designerDeleteSel(){
+    const dz = this._dz;
+    if (!dz.selected) return;
+    dz.layers = dz.layers.filter((l) => l !== dz.selected);
+    dz.selected = null;
+    this.designerUpdateLayerPanel();
+    this.designerDraw();
+  },
+  designerReset(){
+    const dz = this._dz;
+    dz.layers = [];
+    dz.selected = null;
+    dz.baseColor = '#141311';
+    this.designerUpdateLayerPanel();
+    this.designerDraw();
+  },
+
+  designerDeckPath(ctx, w, h){
+    const r = w/2;
+    ctx.beginPath();
+    ctx.moveTo(r, 0);
+    ctx.arcTo(w, 0, w, r, r);
+    ctx.lineTo(w, h-r);
+    ctx.arcTo(w, h, w-r, h, r);
+    ctx.lineTo(r, h);
+    ctx.arcTo(0, h, 0, h-r, r);
+    ctx.lineTo(0, r);
+    ctx.arcTo(0, 0, r, 0, r);
+    ctx.closePath();
+  },
+
+  designerDraw(){
+    const dz = this._dz;
+    const { ctx, canvas } = dz;
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0,0,w,h);
+    ctx.save();
+    this.designerDeckPath(ctx, w, h);
+    ctx.clip();
+    ctx.fillStyle = dz.baseColor;
+    ctx.fillRect(0,0,w,h);
+    dz.layers.forEach((l) => {
+      ctx.save();
+      ctx.translate(l.x, l.y);
+      ctx.rotate(l.rot * Math.PI/180);
+      ctx.scale(l.scale, l.scale);
+      if (l.type === 'image') {
+        ctx.drawImage(l.img, -l.w/2, -l.h/2, l.w, l.h);
+      } else {
+        ctx.fillStyle = l.color;
+        ctx.font = '700 ' + l.size + 'px ' + l.font + ', sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(l.text, 0, 0);
+      }
+      if (l === dz.selected) {
+        ctx.strokeStyle = 'rgba(232,161,92,.9)';
+        ctx.lineWidth = 2/l.scale;
+        ctx.setLineDash([6,4]);
+        ctx.strokeRect(-l.w/2, -l.h/2, l.w, l.h);
+      }
+      ctx.restore();
+    });
+    ctx.restore();
+    ctx.save();
+    this.designerDeckPath(ctx, w, h);
+    ctx.lineWidth = 10;
+    ctx.strokeStyle = '#c87a3e';
+    ctx.stroke();
+    ctx.restore();
+  },
+
+  designerAddToCart(){
+    const dz = this._dz;
+    if (!dz) return;
+    const dataUrl = dz.canvas.toDataURL('image/jpeg', 0.85);
+    const id = 'custom-' + Date.now();
+    this.customItems[id] = { id, name: 'Tabla personalizada', price: 24.9, img: dataUrl };
+    this.persistCustom();
+    this.cart[id] = (this.cart[id] || 0) + 1;
+    this.persist();
+    this.renderCartBadge();
+    this.showToast('Tu diseño se ha añadido a la cesta');
   }
 };
 

@@ -15,7 +15,7 @@
 <meta name="apple-mobile-web-app-title" content="Finger Skate">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/style.css?v=3">
 </head>
 <body>
 
@@ -36,6 +36,12 @@ FINGER SKATE
 <a href="#contacto">Contacto</a>
 </div>
 <div class="navright">
+<a class="shareicon" href="#" onclick="App.shareWhatsapp();return false" aria-label="Compartir por WhatsApp" title="Compartir por WhatsApp">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.6-.8-1.9-.9-.3-.1-.4-.1-.6.1-.2.3-.7.9-.8 1-.2.2-.3.2-.5.1-.3-.1-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.5.1-.6l.4-.4c.1-.1.2-.3.2-.4.1-.1.1-.3 0-.4-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.3-.8.8-.8 1.9 0 1.1.8 2.2.9 2.3.1.2 1.7 2.6 4.2 3.6.6.3 1 .4 1.4.5.6.2 1.1.2 1.5.1.5-.1 1.6-.6 1.8-1.3.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3z"/><path d="M20.5 3.5A10.9 10.9 0 0 0 12.1 0C6 0 1.1 4.9 1.1 10.9c0 1.9.5 3.8 1.4 5.4L1 22l5.9-1.5a11 11 0 0 0 5.2 1.3h0c6 0 11-4.9 11-10.9 0-2.9-1.1-5.7-3.1-7.8zm-8.4 16.8h0a9 9 0 0 1-4.6-1.3l-.3-.2-3.5.9.9-3.4-.2-.3a9 9 0 0 1-1.4-4.8c0-5 4.1-9.1 9.1-9.1a9 9 0 0 1 9 9.1c0 5-4.1 9.1-9 9.1z"/></svg>
+</a>
+<a class="shareicon" href="#" aria-label="Síguenos en TikTok" title="Síguenos en TikTok">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2h3.1c.2 1.6 1.1 3 2.5 3.8.8.5 1.7.7 2.6.8v3.2c-1.6 0-3.1-.5-4.4-1.4v6.8c0 3.4-2.8 6.1-6.2 6.1A6.2 6.2 0 0 1 5.4 13c1.5-1.6 3.6-2.4 5.7-2.2v3.2a2.9 2.9 0 1 0 2 2.8V2z"/></svg>
+</a>
 <button class="cartbtn" onclick="App.toggleCart()" aria-label="Ver cesta">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 7h14l-1.5 9.5a2 2 0 0 1-2 1.7H9a2 2 0 0 1-2-1.7L5.2 4.6A1 1 0 0 0 4.2 4H2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="21" r="1.3" fill="currentColor"/><circle cx="17" cy="21" r="1.3" fill="currentColor"/></svg>
 <span id="cartBadge"></span>
@@ -83,15 +89,6 @@ FINGER SKATE
 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </a>
 <a href="rampas.html" class="btn ghost">Ver rampas</a>
-</div>
-<div class="sharerow">
-<span>Compartir:</span>
-<a class="shareicon" href="#" onclick="App.shareWhatsapp();return false" aria-label="Compartir por WhatsApp" title="Compartir por WhatsApp">
-<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.6-.8-1.9-.9-.3-.1-.4-.1-.6.1-.2.3-.7.9-.8 1-.2.2-.3.2-.5.1-.3-.1-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.5.1-.6l.4-.4c.1-.1.2-.3.2-.4.1-.1.1-.3 0-.4-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.3-.8.8-.8 1.9 0 1.1.8 2.2.9 2.3.1.2 1.7 2.6 4.2 3.6.6.3 1 .4 1.4.5.6.2 1.1.2 1.5.1.5-.1 1.6-.6 1.8-1.3.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3z"/><path d="M20.5 3.5A10.9 10.9 0 0 0 12.1 0C6 0 1.1 4.9 1.1 10.9c0 1.9.5 3.8 1.4 5.4L1 22l5.9-1.5a11 11 0 0 0 5.2 1.3h0c6 0 11-4.9 11-10.9 0-2.9-1.1-5.7-3.1-7.8zm-8.4 16.8h0a9 9 0 0 1-4.6-1.3l-.3-.2-3.5.9.9-3.4-.2-.3a9 9 0 0 1-1.4-4.8c0-5 4.1-9.1 9.1-9.1a9 9 0 0 1 9 9.1c0 5-4.1 9.1-9 9.1z"/></svg>
-</a>
-<a class="shareicon" href="#" aria-label="Síguenos en TikTok" title="Síguenos en TikTok">
-<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2h3.1c.2 1.6 1.1 3 2.5 3.8.8.5 1.7.7 2.6.8v3.2c-1.6 0-3.1-.5-4.4-1.4v6.8c0 3.4-2.8 6.1-6.2 6.1A6.2 6.2 0 0 1 5.4 13c1.5-1.6 3.6-2.4 5.7-2.2v3.2a2.9 2.9 0 1 0 2 2.8V2z"/></svg>
-</a>
 </div>
 </div>
 <div class="scrolldown">
@@ -148,7 +145,7 @@ FINGER SKATE
 
 <div id="overlays"></div>
 
-<script src="assets/app.js"></script>
+<script src="assets/app.js?v=3"></script>
 <script>document.addEventListener('DOMContentLoaded', () => App.init());</script>
 </body>
 </html>

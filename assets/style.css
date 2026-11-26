@@ -33,9 +33,9 @@ section{position:relative;width:100%;overflow:hidden}
 .title{font-size:clamp(52px,8.5vw,120px);line-height:.94;margin-top:14px;opacity:0;transform:translateY(24px);animation:rise .9s ease forwards .25s}
 .sub{margin-top:22px;font-size:17px;color:#d8d8d4;max-width:460px;opacity:0;transform:translateY(16px);animation:rise .8s ease forwards .5s}
 .btnrow{margin-top:36px;display:flex;gap:16px;opacity:0;transform:translateY(16px);animation:rise .8s ease forwards .7s}
-.sharerow{margin-top:22px;display:flex;align-items:center;gap:12px;opacity:0;transform:translateY(16px);animation:rise .8s ease forwards .85s;font-size:12px;color:#b8b8b2;letter-spacing:.03em}
-.shareicon{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:#fff;transition:background .2s,transform .2s}
-.shareicon:hover{background:var(--accent);color:#000;transform:translateY(-2px)}
+.shareicon{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;color:#fff;transition:background .2s,transform .2s,border-color .2s}
+.shareicon:hover{background:var(--accent);border-color:var(--accent);color:#000;transform:translateY(-2px)}
+@media (max-width:400px){.navright{gap:8px}.shareicon{width:34px;height:34px}}
 .btn{display:inline-flex;align-items:center;gap:10px;background:#fff;color:#000;padding:16px 28px;border-radius:999px;font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;transition:transform .25s,box-shadow .25s}
 .btn:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(0,0,0,.35)}
 .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff}
